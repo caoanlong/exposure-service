@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exposure.exposureservice.repository.ThingRepostory">
+    <resultMap id="BaseMap" type="com.exposure.exposureservice.entity.Thing">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="info" jdbcType="VARCHAR" property="info" />
+        <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="images" jdbcType="VARCHAR" property="images" />
+        <result column="views" jdbcType="INTEGER" property="views" />
+        <result column="likes" jdbcType="INTEGER" property="likes" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_by" jdbcType="INTEGER" property="createBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+        <result column="create_ip" jdbcType="VARCHAR" property="createIp" />
+        <result column="update_ip" jdbcType="VARCHAR" property="updateIp" />
+    </resultMap>
+    <select id="findAll" resultMap="BaseMap">
+        select * from `thing`
+    </select>
+    <select id="findList" resultMap="BaseMap">
+        select * from `thing`
+        <if test="title != null">
+            where title like '%' #{title} '%'
+        </if>
+        <if test="type != null">
+            where `type` = #{type}
+        </if>
+        order by create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseMap">
+        select * from `thing` where id = #{id}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(1) from `thing`
+        <if test="title != null">
+            where title like '%' #{title} '%'
+        </if>
+        <if test="type != null">
+            where `type` = #{type}
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member">
+        insert into `thing` (
+          title,
+          `type`,
+          info,
+          avatar,
+          images,
+          views,
+          likes,
+          create_time,
+          create_by,
+          create_ip
+        ) values (
+          #{title},
+          #{type},
+          #{info},
+          #{avatar},
+          #{images},
+          #{views},
+          #{likes},
+          #{createTime},
+          #{createBy},
+          #{createIp}
+        )
+    </insert>
+    <update id="update" parameterType="com.exposure.exposureservice.entity.Member">
+        update `thing`
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="info != null">
+                info = #{info},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="images != null">
+                images = #{images},
+            </if>
+            <if test="views != null">
+                views = #{views},
+            </if>
+            <if test="likes != null">
+                likes = #{likes},
+            </if>
+            updateTime = #{updateTime},
+            updateBy = #{updateBy},
+            updateIp = #{updateIp}
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `thing` where id = #{id}
+    </delete>
+</mapper>

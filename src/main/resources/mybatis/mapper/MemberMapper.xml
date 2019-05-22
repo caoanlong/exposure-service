@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exposure.exposureservice.repository.MemberRepository">
+    <resultMap id="BaseMap" type="com.exposure.exposureservice.entity.Member">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="real_name" jdbcType="VARCHAR" property="realName" />
+        <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    </resultMap>
+    <select id="findAll" resultMap="BaseMap">
+        select * from `member`
+    </select>
+    <select id="findList" resultMap="BaseMap">
+        select * from `member`
+        <if test="mobile != null">
+            where mobile like '%' #{mobile} '%'
+        </if>
+        order by create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseMap">
+        select * from `member` where id = #{id}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(1) from member
+        <if test="mobile != null">
+            where mobile like '%' #{mobile} '%'
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member">
+        insert into `member` (
+          mobile,
+          email,
+          nick_name,
+          real_name,
+          avatar,
+          create_time,
+          last_login_ip,
+          last_login_time
+        ) values (
+          #{mobile},
+          #{email},
+          #{nickName},
+          #{realName},
+          #{avatar},
+          #{createTime},
+          #{lastLoginIp},
+          #{lastLoginTime}
+        )
+    </insert>
+    <update id="update" parameterType="com.exposure.exposureservice.entity.Member">
+        update `member`
+        <set>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `member` where id = #{id}
+    </delete>
+</mapper>
