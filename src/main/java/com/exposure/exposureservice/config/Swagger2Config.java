@@ -20,7 +20,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.edu.tuiguang.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.exposure.exposureservice.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -28,7 +28,7 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("曝光平台后台服务Restfull API文档")
-                .description("一个关于好生意推广系统的后台服务")
+                .description("曝光平台系统的后台服务")
                 .contact(new Contact("Aaron Cao", "http://caoanlong.com", "caoanlong@gmail.com"))
                 .version("1.0")
                 .build();

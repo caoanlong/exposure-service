@@ -2,11 +2,9 @@ package com.exposure.exposureservice.service;
 
 import com.exposure.exposureservice.entity.Member;
 import com.exposure.exposureservice.entity.PageBean;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface MemberService {
     List<Member> findAll();
     PageBean<List<Member>> findList(String mobile, Integer pageIndex, Integer pageSize);

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exposure.exposureservice.repository.SysUserRepository">
+    <resultMap id="BaseMap" type="com.exposure.exposureservice.entity.SysUser">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="permissions" jdbcType="VARCHAR" property="permissions"/>
+        <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+        <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <select id="findAll" resultMap="BaseMap">
+        select * from `sys_user`
+    </select>
+    <select id="findList" resultMap="BaseMap">
+        select * from `sys_user`
+        <if test="userName != null">
+            where user_name like '%' #{userName} '%'
+        </if>
+        order by create_time desc
+        limit #{pageStart}, #{pageSize}
+    </select>
+    <select id="findById" resultMap="BaseMap">
+        select * from `sys_user` where id = #{id}
+    </select>
+    <select id="total" resultType="java.lang.Long">
+        select count(1) from `sys_user`
+        <if test="userName != null">
+            where user_name like '%' #{userName} '%'
+        </if>
+    </select>
+    <insert id="insert" parameterType="com.exposure.exposureservice.entity.SysUser">
+        insert into `sys_user` (
+          user_name,
+          password,
+          avatar,
+          mobile,
+          email,
+          role_id,
+          create_user_id,
+          create_time
+        ) values (
+          #{userName},
+          #{password},
+          #{avatar},
+          #{mobile},
+          #{email},
+          #{roleId},
+          #{createUserId},
+          #{createTime}
+        )
+    </insert>
+    <update id="update" parameterType="com.exposure.exposureservice.entity.SysUser">
+        update `member`
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar}
+            </if>
+            <if test="email != null">
+                email = #{email}
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
+            </if>
+            update_user_id = #{updateUserId},
+            update_time = #{updateTime}
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `sys_user` where id = #{id}
+    </delete>
+</mapper>

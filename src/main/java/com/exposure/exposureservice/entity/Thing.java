@@ -1,5 +1,7 @@
 package com.exposure.exposureservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * 事物（公司或个人）
  * type 1：个人，2：公司
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Thing implements Serializable {
     private Integer id;
     private String title;

@@ -1,0 +1,15 @@
+package com.exposure.exposureservice.service;
+
+import com.exposure.exposureservice.entity.PageBean;
+import com.exposure.exposureservice.entity.SysUser;
+
+import java.util.List;
+
+public interface SysUserService {
+    List<SysUser> findAll();
+    PageBean<List<SysUser>> findList(String userName, Integer pageIndex, Integer pageSize);
+    SysUser findById(Integer id);
+    void insert(SysUser sysUser);
+    void update(SysUser sysUser);
+    void del(Integer id);
+}

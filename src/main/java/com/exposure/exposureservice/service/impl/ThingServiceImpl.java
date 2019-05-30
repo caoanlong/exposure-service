@@ -5,9 +5,11 @@ import com.exposure.exposureservice.entity.Thing;
 import com.exposure.exposureservice.repository.ThingRepostory;
 import com.exposure.exposureservice.service.ThingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ThingServiceImpl implements ThingService {
 
     @Autowired

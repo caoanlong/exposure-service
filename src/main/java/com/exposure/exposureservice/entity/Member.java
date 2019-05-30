@@ -1,11 +1,14 @@
 package com.exposure.exposureservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 会员
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Member implements Serializable {
     private Integer id;
     private String mobile;
