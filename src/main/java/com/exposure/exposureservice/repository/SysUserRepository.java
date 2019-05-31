@@ -14,11 +14,11 @@ public interface SysUserRepository {
             @Param("pageStart") Integer pageStart,
             @Param("pageSize") Integer pageSize
     );
-    SysUser findById(Integer id);
+    SysUser findById(Long id);
     Long total(String userName);
     void insert(SysUser sysUser);
     void update(SysUser sysUser);
-    void del(Integer id);
+    void del(Long id);
 
     SysUser findByNameAndPassword(
             @Param("userName") String userName,

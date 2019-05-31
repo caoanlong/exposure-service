@@ -1,17 +1,24 @@
 package com.exposure.exposureservice.controller;
 
+import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.entity.SysUser;
+import com.exposure.exposureservice.entity.exception.CommonException;
+import com.exposure.exposureservice.enums.ErrorCode;
 import com.exposure.exposureservice.service.SysUserService;
+import com.exposure.exposureservice.utils.JwtUtils;
+import com.exposure.exposureservice.utils.MD5Utils;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +26,10 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = {"/admin/sysUser"})
 public class SysUserController {
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Autowired
     private SysUserService sysUserService;
 
@@ -42,7 +53,7 @@ public class SysUserController {
 
     @ApiOperation(value = "findById", notes = "根据ID查询系统用户详情", response = SysUser.class)
     @GetMapping("/findById")
-    public ResultBean findById(@RequestParam("id") Integer id) {
+    public ResultBean findById(@RequestParam("id") Long id) {
         SysUser sysUser = sysUserService.findById(id);
         return ResultUtils.success(sysUser);
     }
@@ -50,7 +61,7 @@ public class SysUserController {
     @ApiOperation(value = "findByToken", notes = "根据TOKEN查询系统用户详情", response = SysUser.class)
     @GetMapping("/findByToken")
     public ResultBean findByToken(HttpServletRequest request) {
-        Integer id = Integer.valueOf((String) request.getAttribute("sysUserId"));
+        Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
         SysUser sysUser = sysUserService.findById(id);
         return ResultUtils.success(sysUser);
     }
@@ -71,9 +82,48 @@ public class SysUserController {
 
     @ApiOperation(value = "del", notes = "删除系统用户")
     @PostMapping("/del")
-    public ResultBean del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Integer> map) {
-        Integer id = map.get("id");
+    public ResultBean del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Long> map) {
+        Long id = map.get("id");
         sysUserService.del(id);
+        return ResultUtils.success();
+    }
+
+    @ApiOperation(value = "auth", notes = "系统用户认证")
+    @PostMapping("/auth")
+    public ResultBean auth(HttpServletResponse response, @RequestBody  Map<String, String> map) {
+        String userName = map.get("userName");
+        String password = map.get("password");
+        String type = map.get("type");
+
+        if (StringUtils.isBlank(userName))
+            throw new CommonException(ErrorCode.USERNAME_NOTNULL);
+        if (StringUtils.isBlank(password))
+            throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
+
+        String pwd = MD5Utils.md5(password, Constant.MD5_SALT);
+        SysUser sysUser = sysUserService.findByNameAndPassword(userName, pwd);
+
+        if (type.equals("login")) {
+            if (null == sysUser) {
+                throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
+            }
+            return authReturn(response, sysUser.getId().toString());
+        }
+        if (null != sysUser) {
+            throw new CommonException(ErrorCode.USERNAME_EXIST);
+        }
+        SysUser sysUser1 = new SysUser();
+        sysUser1.setUserName(userName);
+        sysUser1.setPassword(pwd);
+        sysUserService.insert(sysUser1);
+        Long id = sysUser1.getId();
+        return authReturn(response, id.toString());
+    }
+
+    private ResultBean authReturn(HttpServletResponse response, String sysUserId) {
+        String jwt = jwtUtils.createJWT(Constant.JWT_ID, "nimadebi1234fuckgouride", sysUserId, Constant.JWT_TTL);
+        response.addHeader("Access-Control-Expose-Headers", "Authorization");
+        response.addHeader("Authorization", jwt);
         return ResultUtils.success();
     }
 }

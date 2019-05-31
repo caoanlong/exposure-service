@@ -8,9 +8,9 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Base implements Serializable {
     private String createUserName;
-    private Integer createUserId;
+    private Long createUserId;
     private String updateUserName;
-    private Integer updateUserId;
+    private Long updateUserId;
     private Date createTime;
     private Date updateTime;
 
@@ -22,11 +22,11 @@ public class Base implements Serializable {
         this.createUserName = createUserName;
     }
 
-    public Integer getCreateUserId() {
+    public Long getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(Integer createUserId) {
+    public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
     }
 
@@ -38,11 +38,11 @@ public class Base implements Serializable {
         this.updateUserName = updateUserName;
     }
 
-    public Integer getUpdateUserId() {
+    public Long getUpdateUserId() {
         return updateUserId;
     }
 
-    public void setUpdateUserId(Integer updateUserId) {
+    public void setUpdateUserId(Long updateUserId) {
         this.updateUserId = updateUserId;
     }
 

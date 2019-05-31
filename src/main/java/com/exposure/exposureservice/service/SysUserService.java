@@ -8,8 +8,10 @@ import java.util.List;
 public interface SysUserService {
     List<SysUser> findAll();
     PageBean<List<SysUser>> findList(String userName, Integer pageIndex, Integer pageSize);
-    SysUser findById(Integer id);
+    SysUser findById(Long id);
     void insert(SysUser sysUser);
     void update(SysUser sysUser);
-    void del(Integer id);
+    void del(Long id);
+
+    SysUser findByNameAndPassword(String userName, String password);
 }

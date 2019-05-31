@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Thing implements Serializable {
-    private Integer id;
+    private Long id;
     private String title;
     private Integer type;
     private String info;
@@ -20,17 +20,17 @@ public class Thing implements Serializable {
     private Integer views;
     private Integer likes;
     private Date createTime;
-    private Integer createBy;
+    private Long createId;
     private Date updateTime;
-    private Integer updateBy;
-    private String create_ip;
-    private String update_ip;
+    private Long updateId;
+    private String createIp;
+    private String updateIp;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -98,12 +98,12 @@ public class Thing implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getCreateBy() {
-        return createBy;
+    public Long getCreateId() {
+        return createId;
     }
 
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
+    public void setCreateId(Long createId) {
+        this.createId = createId;
     }
 
     public Date getUpdateTime() {
@@ -114,27 +114,27 @@ public class Thing implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getUpdateBy() {
-        return updateBy;
+    public Long getUpdateId() {
+        return updateId;
     }
 
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
+    public void setUpdateId(Long updateId) {
+        this.updateId = updateId;
     }
 
-    public String getCreate_ip() {
-        return create_ip;
+    public String getCreateIp() {
+        return createIp;
     }
 
-    public void setCreate_ip(String create_ip) {
-        this.create_ip = create_ip;
+    public void setCreateIp(String createIp) {
+        this.createIp = createIp;
     }
 
-    public String getUpdate_ip() {
-        return update_ip;
+    public String getUpdateIp() {
+        return updateIp;
     }
 
-    public void setUpdate_ip(String update_ip) {
-        this.update_ip = update_ip;
+    public void setUpdateIp(String updateIp) {
+        this.updateIp = updateIp;
     }
 }

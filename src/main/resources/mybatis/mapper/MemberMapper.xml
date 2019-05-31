@@ -32,8 +32,9 @@
             where mobile like '%' #{mobile} '%'
         </if>
     </select>
-    <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member">
+    <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into `member` (
+          id,
           mobile,
           email,
           nick_name,
@@ -43,6 +44,7 @@
           last_login_ip,
           last_login_time
         ) values (
+          #{id},
           #{mobile},
           #{email},
           #{nickName},
@@ -74,4 +76,7 @@
     <delete id="del" parameterType="java.lang.Integer">
         delete from `member` where id = #{id}
     </delete>
+    <select id="findByNameAndPassword" resultMap="BaseResultMap">
+        select * from `member` where user_name = #{userName} and password = #{password}
+    </select>
 </mapper>

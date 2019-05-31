@@ -8,8 +8,10 @@ import java.util.List;
 public interface MemberService {
     List<Member> findAll();
     PageBean<List<Member>> findList(String mobile, Integer pageIndex, Integer pageSize);
-    Member findById(Integer id);
+    Member findById(Long id);
     void insert(Member member);
     void update(Member member);
-    void del(Integer id);
+    void del(Long id);
+
+    Member findByNameAndPassword(String userName, String password);
 }

@@ -8,8 +8,8 @@ import java.util.List;
 public interface ThingService {
     List<Thing> findAll();
     PageBean<List<Thing>> findList(String title, Integer type, Integer pageIndex, Integer pageSize);
-    Thing findById(Integer id);
+    Thing findById(Long id);
     void insert(Thing thing);
     void update(Thing thing);
-    void del(Integer id);
+    void del(Long id);
 }

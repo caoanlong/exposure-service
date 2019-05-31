@@ -15,9 +15,9 @@ public interface ThingRepostory {
             @Param("pageStart") Integer pageStart,
             @Param("pageSize") Integer pageSize
     );
-    Thing findById(Integer id);
+    Thing findById(Long id);
     Long total(@Param("title") String title, @Param("type") Integer type);
     void insert(Thing thing);
     void update(Thing thing);
-    void del(Integer id);
+    void del(Long id);
 }

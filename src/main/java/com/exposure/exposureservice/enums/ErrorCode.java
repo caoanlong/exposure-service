@@ -40,6 +40,11 @@ public enum ErrorCode {
     SMSCODE_ERROR(108, "验证码错误"),
 
     /**
+     * 用户已存在
+     */
+    USERNAME_EXIST(109, "用户已存在"),
+
+    /**
      * 角色不能为空
      */
     ROLE_NOTNULL(1000, "角色不能为空"),
@@ -65,59 +70,9 @@ public enum ErrorCode {
     MOBILE_NOTNULL(1004, "手机不能为空"),
 
     /**
-     * 行业不能为空
-     */
-    INDUSTRY_NOTNULL(1005, "行业不能为空"),
-
-    /**
-     * 商家名称不能为空
-     */
-    MERCHANTNAME_NOTNULL(1006, "商家名称不能为空"),
-
-    /**
-     * 商家报名人不能为空
-     */
-    MERCHANTMEMBER_NOTNULL(1007, "商家报名人不能为空"),
-
-    /**
-     * 商家ID不能为空
-     */
-    MERCHANTID_NOTNULL(1008, "商家ID不能为空"),
-
-    /**
      * 手机号已存在
      */
     MOBILE_EXIST(1009, "手机号已存在"),
-
-    /**
-     * 活动ID不能为空
-     */
-    ACTIVITYID_NOTNULL(1010, "活动ID不能为空"),
-
-    /**
-     * 活动名称不能为空
-     */
-    ACTIVITYNAME_NOTNULL(1011, "活动名称不能为空"),
-
-    /**
-     * 活动Banner不能为空
-     */
-    ACTIVITYBANNER_NOTNULL(1012, "活动Banner不能为空"),
-
-    /**
-     * 活动购买须知不能为空
-     */
-    ACTIVITYNOTES_NOTNULL(1013, "活动购买须知不能为空"),
-
-    /**
-     * 活动价格不能为空
-     */
-    ACTIVITYPRICE_NOTNULL(1014, "活动价格不能为空"),
-
-    /**
-     * 活动截止时间不能为空
-     */
-    ACTIVITYENDTIME_NOTNULL(1015, "活动截止时间不能为空"),
 
     /**
      * 手机号格式不正确

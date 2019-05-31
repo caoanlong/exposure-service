@@ -11,9 +11,9 @@
         <result column="views" jdbcType="INTEGER" property="views" />
         <result column="likes" jdbcType="INTEGER" property="likes" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="create_by" jdbcType="INTEGER" property="createBy" />
+        <result column="create_id" jdbcType="INTEGER" property="createBy" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-        <result column="update_by" jdbcType="INTEGER" property="updateBy" />
+        <result column="update_id" jdbcType="INTEGER" property="updateBy" />
         <result column="create_ip" jdbcType="VARCHAR" property="createIp" />
         <result column="update_ip" jdbcType="VARCHAR" property="updateIp" />
     </resultMap>
@@ -45,6 +45,7 @@
     </select>
     <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member">
         insert into `thing` (
+          id,
           title,
           `type`,
           info,
@@ -53,9 +54,10 @@
           views,
           likes,
           create_time,
-          create_by,
+          create_id,
           create_ip
         ) values (
+          #{id},
           #{title},
           #{type},
           #{info},
@@ -64,7 +66,7 @@
           #{views},
           #{likes},
           #{createTime},
-          #{createBy},
+          #{createId},
           #{createIp}
         )
     </insert>
@@ -92,9 +94,9 @@
             <if test="likes != null">
                 likes = #{likes},
             </if>
-            updateTime = #{updateTime},
-            updateBy = #{updateBy},
-            updateIp = #{updateIp}
+            update_time = #{updateTime},
+            update_id = #{updateId},
+            update_ip = #{updateIp}
         </set>
         where id = #{id}
     </update>

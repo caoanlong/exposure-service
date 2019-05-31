@@ -37,7 +37,7 @@ public class ThingController {
     }
 
     @GetMapping("/findById")
-    public ResultBean findById(@RequestParam("id") Integer id) {
+    public ResultBean findById(@RequestParam("id") Long id) {
         Thing thing = thingService.findById(id);
         return ResultUtils.success(thing);
     }
@@ -55,8 +55,8 @@ public class ThingController {
     }
 
     @PostMapping("/del")
-    public ResultBean del(@RequestBody Map<String, Integer> map) {
-        Integer id = map.get("id");
+    public ResultBean del(@RequestBody Map<String, Long> map) {
+        Long id = map.get("id");
         thingService.del(id);
         return ResultUtils.success();
     }

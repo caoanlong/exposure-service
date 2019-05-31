@@ -4,13 +4,18 @@ import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.Thing;
 import com.exposure.exposureservice.repository.ThingRepostory;
 import com.exposure.exposureservice.service.ThingService;
+import com.exposure.exposureservice.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class ThingServiceImpl implements ThingService {
+
+    @Autowired
+    private SnowFlake snowFlake;
 
     @Autowired
     private ThingRepostory thingRepostory;
@@ -34,12 +39,15 @@ public class ThingServiceImpl implements ThingService {
     }
 
     @Override
-    public Thing findById(Integer id) {
+    public Thing findById(Long id) {
         return thingRepostory.findById(id);
     }
 
     @Override
     public void insert(Thing thing) {
+        Long id = snowFlake.nextId();
+        thing.setCreateId(id);
+        thing.setCreateTime(new Date());
         thingRepostory.insert(thing);
     }
 
@@ -49,7 +57,7 @@ public class ThingServiceImpl implements ThingService {
     }
 
     @Override
-    public void del(Integer id) {
+    public void del(Long id) {
         thingRepostory.del(id);
     }
 }

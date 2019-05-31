@@ -15,9 +15,14 @@ public interface MemberRepository {
             @Param("pageStart") Integer pageStart,
             @Param("pageSize") Integer pageSize
     );
-    Member findById(Integer id);
+    Member findById(Long id);
     Long total(String mobile);
     void insert(Member member);
     void update(Member member);
-    void del(Integer id);
+    void del(Long id);
+
+    Member findByNameAndPassword(
+            @Param("userName") String userName,
+            @Param("password") String password
+    );
 }

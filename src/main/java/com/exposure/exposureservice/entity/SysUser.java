@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SysUser extends Base {
-    private Integer id;
+    private Long id;
     private String userName;
     private String password;
     private String avatar;
@@ -17,11 +17,11 @@ public class SysUser extends Base {
     private String roleName;
     private String permissions;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

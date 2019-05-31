@@ -4,6 +4,7 @@ import com.exposure.exposureservice.entity.Member;
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.repository.MemberRepository;
 import com.exposure.exposureservice.service.MemberService;
+import com.exposure.exposureservice.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import java.util.List;
 
 @Service
 public class MemberServiceImpl implements MemberService {
+    @Autowired
+    private SnowFlake snowFlake;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -35,12 +38,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findById(Integer id) {
+    public Member findById(Long id) {
         return memberRepository.findById(id);
     }
 
     @Override
     public void insert(Member member) {
+        Long id = snowFlake.nextId();
+        member.setId(id);
         member.setCreateTime(new Date());
         memberRepository.insert(member);
     }
@@ -51,7 +56,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void del(Integer id) {
+    public void del(Long id) {
         memberRepository.del(id);
+    }
+
+    @Override
+    public Member findByNameAndPassword(String userName, String password) {
+        return memberRepository.findByNameAndPassword(userName, password);
     }
 }

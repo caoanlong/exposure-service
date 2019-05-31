@@ -47,11 +47,13 @@
     </select>
     <insert id="insert" parameterType="com.exposure.exposureservice.entity.SysRole">
         insert into `sys_role` (
+          id,
           role_name,
           permissions,
           create_user_id,
           create_time
         ) values (
+          #{id},
           #{roleName},
           #{permissions},
           #{createUserId},

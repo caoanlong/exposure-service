@@ -10,9 +10,11 @@ import java.util.Date;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Member implements Serializable {
-    private Integer id;
+    private Long id;
     private String mobile;
     private String email;
+    private String userName;
+    private String password;
     private String nickName;
     private String realName;
     private String avatar;
@@ -20,11 +22,11 @@ public class Member implements Serializable {
     private String lastLoginIp;
     private Date lastLoginTime;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,6 +44,22 @@ public class Member implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getNickName() {

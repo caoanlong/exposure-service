@@ -44,7 +44,7 @@ public class SysRoleController {
 
     @ApiOperation(value = "findById", notes = "根据ID查询系统角色详情", response = SysRole.class)
     @GetMapping("/findById")
-    public ResultBean findById(@RequestParam("id") Integer id) {
+    public ResultBean findById(@RequestParam("id") Long id) {
         SysRole sysRole = sysRoleService.findById(id);
         return ResultUtils.success(sysRole);
     }
@@ -65,8 +65,8 @@ public class SysRoleController {
 
     @ApiOperation(value = "del", notes = "删除系统角色")
     @PostMapping("/del")
-    public ResultBean del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Integer> map) {
-        Integer id = map.get("id");
+    public ResultBean del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Long> map) {
+        Long id = map.get("id");
         sysRoleService.del(id);
         return ResultUtils.success();
     }
