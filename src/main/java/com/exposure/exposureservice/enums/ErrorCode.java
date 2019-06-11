@@ -100,6 +100,16 @@ public enum ErrorCode {
     ID_NOTNULL(1020, "ID不能为空"),
 
     /**
+     * type错误
+     */
+    TYPE_ERROR(1021, "type错误"),
+
+    /**
+     * type不能为空
+     */
+    TYPE_NOTNULL(1022, "type不能为空"),
+
+    /**
      * 图片不能为空
      */
     IMG_NOTNULL(2000, "图片不能为空"),

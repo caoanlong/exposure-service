@@ -84,4 +84,7 @@
     <select id="findByNameAndPassword" resultMap="BaseMap">
         select * from `member` where user_name = #{userName} and password = #{password}
     </select>
+    <select id="findByName" resultMap="BaseMap">
+        select * from `member` where user_name = #{userName}
+    </select>
 </mapper>

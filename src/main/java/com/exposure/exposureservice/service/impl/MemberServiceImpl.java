@@ -1,9 +1,11 @@
 package com.exposure.exposureservice.service.impl;
 
+import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.entity.Member;
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.repository.MemberRepository;
 import com.exposure.exposureservice.service.MemberService;
+import com.exposure.exposureservice.utils.MD5Utils;
 import com.exposure.exposureservice.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +67,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public List<Member> findByName(String userName) {
+        return memberRepository.findByName(userName);
+    }
+
+    @Override
     public Member findByNameAndPassword(String userName, String password) {
-        return memberRepository.findByNameAndPassword(userName, password);
+        String pwd = MD5Utils.md5(password, Constant.MD5_SALT);
+        return memberRepository.findByNameAndPassword(userName, pwd);
     }
 }

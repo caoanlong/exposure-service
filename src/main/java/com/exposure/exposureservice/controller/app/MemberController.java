@@ -5,6 +5,7 @@ import com.exposure.exposureservice.entity.Member;
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.entity.exception.CommonException;
+import com.exposure.exposureservice.entity.req.MemberDto;
 import com.exposure.exposureservice.enums.ErrorCode;
 import com.exposure.exposureservice.service.MemberService;
 import com.exposure.exposureservice.utils.JwtUtils;
@@ -13,6 +14,7 @@ import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,33 +87,44 @@ public class MemberController {
         return ResultUtils.success();
     }
 
-    @ApiOperation(value = "auth", notes = "会员认证")
-    @PostMapping("/auth")
-    public ResultBean auth(HttpServletResponse response, @RequestBody  Map<String, String> map) {
-        String userName = map.get("userName");
-        String password = map.get("password");
-        String type = map.get("type");
+    @ApiOperation(value = "login", notes = "会员登录")
+    @PostMapping("/login")
+    public ResultBean login(HttpServletResponse response, @RequestBody MemberDto memberDto) {
+        String userName = memberDto.getUserName();
+        String password = memberDto.getPassword();
 
         if (StringUtils.isBlank(userName))
             throw new CommonException(ErrorCode.USERNAME_NOTNULL);
         if (StringUtils.isBlank(password))
             throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
 
-        String pwd = MD5Utils.md5(password, Constant.MD5_SALT);
-        Member member = memberService.findByNameAndPassword(userName, pwd);
-
-        if (type.equals("login")) {
-            if (null == member) {
-                throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
-            }
-            return authReturn(response, member.getId().toString());
+        Member member = memberService.findByNameAndPassword(userName, password);
+        if (null == member) {
+            throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
         }
-        if (null != member) {
+        return authReturn(response, member.getId().toString());
+    }
+
+    @ApiOperation(value = "register", notes = "会员注册")
+    @PostMapping("/register")
+    @Transactional
+    public ResultBean register(HttpServletResponse response, @RequestBody MemberDto memberDto) {
+        String userName = memberDto.getUserName();
+        String password = memberDto.getPassword();
+
+        if (StringUtils.isBlank(userName))
+            throw new CommonException(ErrorCode.USERNAME_NOTNULL);
+        if (StringUtils.isBlank(password))
+            throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
+
+        List<Member> members = memberService.findByName(userName);
+
+        if (null != members && members.size() > 0) {
             throw new CommonException(ErrorCode.USERNAME_EXIST);
         }
         Member member1 = new Member();
         member1.setUserName(userName);
-        member1.setPassword(pwd);
+        member1.setPassword(password);
         memberService.insert(member1);
         Long id = member1.getId();
         return authReturn(response, id.toString());

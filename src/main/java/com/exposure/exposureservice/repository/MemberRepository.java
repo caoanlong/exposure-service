@@ -21,6 +21,8 @@ public interface MemberRepository {
     void update(Member member);
     void del(Long id);
 
+    List<Member> findByName(@Param("userName") String userName);
+
     Member findByNameAndPassword(
             @Param("userName") String userName,
             @Param("password") String password
