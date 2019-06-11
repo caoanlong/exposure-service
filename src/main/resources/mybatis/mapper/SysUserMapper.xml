@@ -90,7 +90,7 @@
     <delete id="del" parameterType="java.lang.Integer">
         delete from `sys_user` where id = #{id}
     </delete>
-    <select id="findByNameAndPassword" resultMap="BaseResultMap">
+    <select id="findByNameAndPassword" resultMap="BaseMap">
         select * from `sys_user` where user_name = #{userName} and password = #{password}
     </select>
 </mapper>

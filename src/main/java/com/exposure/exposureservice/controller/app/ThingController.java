@@ -1,8 +1,9 @@
-package com.exposure.exposureservice.controller;
+package com.exposure.exposureservice.controller.app;
 
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.entity.Thing;
+import com.exposure.exposureservice.entity.req.ThingDto;
 import com.exposure.exposureservice.service.ThingService;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.Api;
@@ -43,8 +44,9 @@ public class ThingController {
     }
 
     @PostMapping("/add")
-    public ResultBean add(@RequestBody Thing thing) {
-        thingService.insert(thing);
+    public ResultBean add(@RequestBody ThingDto thingDto) {
+
+        thingService.insert(thingDto);
         return ResultUtils.success();
     }
 

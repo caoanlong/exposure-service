@@ -85,6 +85,21 @@ public enum ErrorCode {
     SMSCODE_NOTNULL(1017, "短信验证码不能为空"),
 
     /**
+     * 标题不能为空
+     */
+    TITLE_NOTNULL(1018, "标题不能为空"),
+
+    /**
+     * 详情不能为空
+     */
+    INFO_NOTNULL(1019, "详情不能为空"),
+
+    /**
+     * ID不能为空
+     */
+    ID_NOTNULL(1020, "ID不能为空"),
+
+    /**
      * 图片不能为空
      */
     IMG_NOTNULL(2000, "图片不能为空"),

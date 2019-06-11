@@ -7,6 +7,7 @@ import com.exposure.exposureservice.service.MemberService;
 import com.exposure.exposureservice.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void insert(Member member) {
         Long id = snowFlake.nextId();
         member.setId(id);
@@ -51,11 +53,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void update(Member member) {
         memberRepository.update(member);
     }
 
     @Override
+    @Transactional
     public void del(Long id) {
         memberRepository.del(id);
     }

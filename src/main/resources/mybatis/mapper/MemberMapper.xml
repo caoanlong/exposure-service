@@ -5,6 +5,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="mobile" jdbcType="VARCHAR" property="mobile" />
         <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
         <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
         <result column="real_name" jdbcType="VARCHAR" property="realName" />
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
@@ -35,6 +36,8 @@
     <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into `member` (
           id,
+          user_name,
+          password,
           mobile,
           email,
           nick_name,
@@ -45,6 +48,8 @@
           last_login_time
         ) values (
           #{id},
+          #{userName},
+          #{password},
           #{mobile},
           #{email},
           #{nickName},
@@ -73,10 +78,10 @@
         </set>
         where id = #{id}
     </update>
-    <delete id="del" parameterType="java.lang.Integer">
+    <delete id="del" parameterType="java.lang.Long">
         delete from `member` where id = #{id}
     </delete>
-    <select id="findByNameAndPassword" resultMap="BaseResultMap">
+    <select id="findByNameAndPassword" resultMap="BaseMap">
         select * from `member` where user_name = #{userName} and password = #{password}
     </select>
 </mapper>
