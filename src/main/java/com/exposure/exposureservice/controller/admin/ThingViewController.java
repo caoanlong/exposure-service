@@ -1,8 +1,8 @@
 package com.exposure.exposureservice.controller.admin;
 
-import com.exposure.exposureservice.entity.Member;
 import com.exposure.exposureservice.entity.PageBean;
-import com.exposure.exposureservice.service.MemberService;
+import com.exposure.exposureservice.entity.Thing;
+import com.exposure.exposureservice.service.ThingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,20 +13,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/member")
-public class MemberViewController {
+@RequestMapping("/thing")
+public class ThingViewController {
     @Autowired
-    private MemberService memberService;
+    private ThingService thingService;
 
     @GetMapping("/list")
     public String list(
-            @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "type", required = false) Integer type,
             @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
             Model model) {
-        PageBean<List<Member>> list = memberService.findList(mobile, pageIndex, pageSize);
-        model.addAttribute("view", "member");
-        model.addAttribute("members", list);
-        return "member";
+        PageBean<List<Thing>> list = thingService.findList(title, type, pageIndex, pageSize);
+        model.addAttribute("view", "thing");
+        model.addAttribute("things", list);
+        return "thing";
     }
 }

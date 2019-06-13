@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class PageBean<T> implements Serializable {
     private Integer pageIndex;
     private Integer pageSize;
+    private Integer pages;
     private Long total;
     private T list;
 
@@ -30,6 +31,12 @@ public class PageBean<T> implements Serializable {
 
     public void setTotal(Long total) {
         this.total = total;
+        Integer pageNum = (int) Math.ceil(total / this.pageSize);
+        this.pages = pageNum == 0 ? 1 : pageNum;
+    }
+
+    public Integer getPages() {
+        return pages;
     }
 
     public T getList() {

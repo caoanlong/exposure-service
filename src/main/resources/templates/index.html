@@ -1,8 +1,11 @@
-<div layout:decorator="layout" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-    <div layout:fragment="content" class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">曝光后台管理系统</h1>
-            <p class="lead">法克，欢迎您！</p>
+<div xmlns:th=http://www.thymeleaf.org layout:decorator="layout" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+    <div layout:fragment="content">
+        <div th:include="navbar"></div>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">曝光后台管理系统</h1>
+                <p class="lead">法克，欢迎您！</p>
+            </div>
         </div>
     </div>
 </div>
