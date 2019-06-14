@@ -11,12 +11,12 @@ import java.util.List;
 public interface MemberRepository {
     List<Member> findAll();
     List<Member> findList(
-            @Param("mobile") String mobile,
+            @Param("userName") String userName,
             @Param("pageStart") Integer pageStart,
             @Param("pageSize") Integer pageSize
     );
     Member findById(Long id);
-    Long total(String mobile);
+    Long total(@Param("userName") String userName);
     void insert(Member member);
     void update(Member member);
     void del(Long id);

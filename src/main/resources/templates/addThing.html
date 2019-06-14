@@ -1,0 +1,48 @@
+<div xmlns:th=http://www.thymeleaf.org xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
+    <div layout:fragment="content">
+        <div th:include="navbar"></div>
+        <div class="row" style="padding: 50px;">
+            <form style="width:60%" method="post">
+                <div class="form-group">
+                    <label for="title">标题</label>
+                    <input type="text" class="form-control" id="title" placeholder="请输入标题">
+                </div>
+                <div class="form-group">
+                    <label for="personal">类型</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="personal" value="1" checked>
+                        <label class="form-check-label" for="personal">个人</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="company" value="2">
+                        <label class="form-check-label" for="company">公司</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="info">详情</label>
+                    <textarea class="form-control" rows="6" id="info" placeholder="请输入详情"></textarea>
+                </div>
+                <div class="form-group">
+                    <input id="fileupload" class="file" type="file" name="image" data-preview-file-type="text" multiple>
+                </div>
+                <button type="submit" class="btn btn-primary" style="padding-left: 50px;padding-right: 50px;">确定</button>
+            </form>
+
+            <script>
+                $("#fileupload").fileinput({
+                    uploadUrl: '/app/common/upload',
+                    maxFileCount: 9,
+                    allowedFileTypes: ['image'],
+                    showCancel: true,
+                    append: true
+                }).on('fileuploaded', function(event, data, previewId, index) {
+                    console.log(data.response.data)
+                }).on('fileuploaderror', function(event, data, msg) {
+                    console.log('File Upload Error', 'ID: ' + data.fileId + ', Thumb ID: ' + data.previewId);
+                }).on('filebatchuploadcomplete', function(event, preview, config, tags, extraData) {
+                    console.log('File Batch Uploaded', preview, config, tags, extraData);
+                })
+            </script>
+        </div>
+    </div>
+</div>

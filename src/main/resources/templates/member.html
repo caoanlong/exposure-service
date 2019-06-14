@@ -2,16 +2,17 @@
     <div layout:fragment="content">
         <div th:include="navbar"></div>
         <div style="padding: 20px;">
-            <form class="form-inline" style="padding-bottom: 20px;">
+            <form class="form-inline" style="padding-bottom: 20px;" method="get" action="/member/list">
                 <div class="form-group" style="margin-right: 10px;">
-                    <input type="text" class="form-control" placeholder="用户名">
+                    <input type="text" class="form-control" name="userName" placeholder="用户名" th:value="${userName}">
+                    <input type="hidden" class="form-control" name="pageIndex" th:value="${members.pageIndex}">
                 </div>
                 <button type="submit" class="btn btn-primary">查询</button>
             </form>
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col" width="60">#</th>
                     <th scope="col">用户名</th>
                     <th scope="col">手机号</th>
                     <th scope="col">邮箱</th>
@@ -38,8 +39,8 @@
                     <li class="page-item" th:classappend="${members.pageIndex == 1} ? 'disabled' : ''">
                         <a class="page-link" th:href="'/member/list?pageIndex=' + ${members.pageIndex - 1}">上一页</a>
                     </li>
-                    <li class="page-item" th:classappend="${members.pageIndex == item} ? 'active' : ''" th:each="item : ${members.pages}">
-                        <a class="page-link" href="#" th:text="${item}"></a>
+                    <li class="page-item" th:classappend="${members.pageIndex == item} ? 'active' : ''" th:each="item : ${#numbers.sequence(1, members.pages)}">
+                        <a class="page-link" th:href="'/member/list?pageIndex=' + ${item}" th:text="${item}"></a>
                     </li>
                     <li class="page-item" th:classappend="${members.pageIndex == members.pages} ? 'disabled' : ''">
                         <a class="page-link" th:href="'/member/list?pageIndex=' + ${members.pageIndex + 1}">下一页</a>

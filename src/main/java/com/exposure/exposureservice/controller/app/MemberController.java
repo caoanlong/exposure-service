@@ -9,7 +9,6 @@ import com.exposure.exposureservice.entity.req.MemberDto;
 import com.exposure.exposureservice.enums.ErrorCode;
 import com.exposure.exposureservice.service.MemberService;
 import com.exposure.exposureservice.utils.JwtUtils;
-import com.exposure.exposureservice.utils.MD5Utils;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +23,7 @@ import java.util.Map;
 
 @Api(value = "MemberController", description = "会员管理")
 @RestController
-@RequestMapping(value = {"/admin/member", "/app/member"})
+@RequestMapping(value = {"/app/member"})
 public class MemberController {
     @Autowired
     private MemberService memberService;

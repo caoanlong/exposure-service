@@ -31,7 +31,8 @@ public class PageBean<T> implements Serializable {
 
     public void setTotal(Long total) {
         this.total = total;
-        Integer pageNum = (int) Math.ceil(total / this.pageSize);
+        Float temp = (float) total / (float) this.pageSize;
+        Integer pageNum = (int) Math.ceil(temp);
         this.pages = pageNum == 0 ? 1 : pageNum;
     }
 

@@ -22,11 +22,13 @@
     </select>
     <select id="findList" resultMap="BaseMap">
         select * from `thing`
+        where
+        1=1
         <if test="title != null">
-            where title like '%' #{title} '%'
+            and title like '%' #{title} '%'
         </if>
         <if test="type != null">
-            where `type` = #{type}
+            and `type` = #{type}
         </if>
         order by create_time desc
         limit #{pageStart}, #{pageSize}
@@ -43,11 +45,13 @@
     </update>
     <select id="total" resultType="java.lang.Long">
         select count(1) from `thing`
+        where
+        1=1
         <if test="title != null">
-            where title like '%' #{title} '%'
+            and title like '%' #{title} '%'
         </if>
         <if test="type != null">
-            where `type` = #{type}
+            and `type` = #{type}
         </if>
     </select>
     <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member">

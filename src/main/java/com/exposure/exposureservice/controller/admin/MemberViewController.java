@@ -20,11 +20,12 @@ public class MemberViewController {
 
     @GetMapping("/list")
     public String list(
-            @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "userName", required = false) String userName,
             @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
             Model model) {
-        PageBean<List<Member>> list = memberService.findList(mobile, pageIndex, pageSize);
+        PageBean<List<Member>> list = memberService.findList(userName, pageIndex, pageSize);
+        model.addAttribute("userName", userName);
         model.addAttribute("view", "member");
         model.addAttribute("members", list);
         return "member";

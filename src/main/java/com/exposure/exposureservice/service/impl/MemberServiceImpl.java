@@ -28,10 +28,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public PageBean<List<Member>> findList(String mobile, Integer pageIndex, Integer pageSize) {
+    public PageBean<List<Member>> findList(String userName, Integer pageIndex, Integer pageSize) {
         Integer pageStart = (pageIndex - 1) * pageSize;
-        List<Member> members = memberRepository.findList(mobile, pageStart, pageSize);
-        Long total = memberRepository.total(mobile);
+        List<Member> members = memberRepository.findList(userName, pageStart, pageSize);
+        Long total = memberRepository.total(userName);
         PageBean<List<Member>> pageBean = new PageBean<>();
         pageBean.setList(members);
         pageBean.setPageIndex(pageIndex);

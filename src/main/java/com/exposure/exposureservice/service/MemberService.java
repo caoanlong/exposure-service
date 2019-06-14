@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MemberService {
     List<Member> findAll();
-    PageBean<List<Member>> findList(String mobile, Integer pageIndex, Integer pageSize);
+    PageBean<List<Member>> findList(String userName, Integer pageIndex, Integer pageSize);
     Member findById(Long id);
     void insert(Member member);
     void update(Member member);

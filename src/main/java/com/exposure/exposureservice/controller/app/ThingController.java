@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Api(value = "ThingController", description = "事物管理")
 @RestController
-@RequestMapping(value = {"/admin/thing", "/app/thing"})
+@RequestMapping(value = {"/app/thing"})
 public class ThingController {
     @Autowired
     private ThingService thingService;

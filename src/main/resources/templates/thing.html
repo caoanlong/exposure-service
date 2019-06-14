@@ -3,13 +3,26 @@
         <div th:include="navbar"></div>
         <div style="padding: 20px;">
             <div class="row" style="padding-bottom: 20px;">
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" placeholder="用户名" style="width: auto;display: inline-block;margin-right: 10px;">
-                    <button type="button" class="btn btn-primary" style="position: relative;left: -4px;top: -2px;">查询</button>
-                </div>
-                <div class="col-sm-6 text-right">
-                    <button type="button" class="btn btn-success">添加</button>
-                </div>
+                <form class="col-sm-6" method="get" action="/thing/list">
+                    <input type="text" class="form-control" name="title" th:value="${title}" placeholder="标题" style="width: auto;display: inline-block;margin-right: 10px;">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="all" value="" th:checked="${type == null}">
+                        <label class="form-check-label" for="all">全部</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="personal" value="1" th:checked="${type == 1}">
+                        <label class="form-check-label" for="personal">个人</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="company" value="2" th:checked="${type == 2}">
+                        <label class="form-check-label" for="company">公司</label>
+                    </div>
+                    <input type="hidden" class="form-control" name="pageIndex" th:value="${things.pageIndex}">
+                    <button type="submit" class="btn btn-primary" style="position: relative;left: -4px;top: -2px;">查询</button>
+                </form>
+                <form class="col-sm-6 text-right" method="get" action="/thing/add">
+                    <button type="submit" class="btn btn-success">添加</button>
+                </form>
             </div>
             <table class="table table-bordered table-hover">
                 <thead>
@@ -35,13 +48,13 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <li class="page-item" th:classappend="${things.pageIndex == 1} ? 'disabled' : ''">
-                        <a class="page-link" th:href="'/member/list?pageIndex=' + ${things.pageIndex - 1}">上一页</a>
+                        <a class="page-link" th:href="'/thing/list?pageIndex=' + ${things.pageIndex - 1}">上一页</a>
                     </li>
-                    <li class="page-item" th:classappend="${things.pageIndex == item} ? 'active' : ''" th:each="item : ${things.pages}">
-                        <a class="page-link" href="#" th:text="${item}"></a>
+                    <li class="page-item" th:classappend="${things.pageIndex == item} ? 'active' : ''" th:each="item : ${#numbers.sequence(1, things.pages)}">
+                        <a class="page-link" th:href="'/thing/list?pageIndex=' + ${item}" th:text="${item}"></a>
                     </li>
                     <li class="page-item" th:classappend="${things.pageIndex == things.pages} ? 'disabled' : ''">
-                        <a class="page-link" th:href="'/member/list?pageIndex=' + ${things.pageIndex + 1}">下一页</a>
+                        <a class="page-link" th:href="'/thing/list?pageIndex=' + ${things.pageIndex + 1}">下一页</a>
                     </li>
                 </ul>
             </nav>

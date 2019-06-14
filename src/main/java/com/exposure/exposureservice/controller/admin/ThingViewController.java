@@ -26,8 +26,15 @@ public class ThingViewController {
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
             Model model) {
         PageBean<List<Thing>> list = thingService.findList(title, type, pageIndex, pageSize);
+        model.addAttribute("title", title);
+        model.addAttribute("type", type);
         model.addAttribute("view", "thing");
         model.addAttribute("things", list);
         return "thing";
+    }
+
+    @GetMapping("/add")
+    public String add() {
+        return "addThing";
     }
 }
