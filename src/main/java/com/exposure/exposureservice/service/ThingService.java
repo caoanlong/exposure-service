@@ -11,6 +11,6 @@ public interface ThingService {
     PageBean<List<Thing>> findList(String title, Integer type, Integer pageIndex, Integer pageSize);
     Thing findById(Long id);
     void insert(ThingDto thingDto);
-    void update(Thing thing);
+    void update(ThingDto thingDto);
     void del(Long id);
 }

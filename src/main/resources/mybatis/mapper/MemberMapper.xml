@@ -75,6 +75,9 @@
             <if test="avatar != null">
                 avatar = #{avatar}
             </if>
+            <if test="mobile != null">
+                avatar = #{avatar}
+            </if>
         </set>
         where id = #{id}
     </update>

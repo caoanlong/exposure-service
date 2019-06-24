@@ -1,4 +1,4 @@
-package com.exposure.exposureservice.controller.admin;
+package com.exposure.exposureservice.controller;
 
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;

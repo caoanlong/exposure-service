@@ -1,4 +1,4 @@
-package com.exposure.exposureservice.controller.app;
+package com.exposure.exposureservice.controller;
 
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 @Api(value = "ThingController", description = "事物管理")
+//@CrossOrigin
 @RestController
-@RequestMapping(value = {"/app/thing"})
+@RequestMapping(value = {"/app/thing", "/admin/thing"})
 public class ThingController {
     @Autowired
     private ThingService thingService;
@@ -51,8 +52,8 @@ public class ThingController {
     }
 
     @PostMapping("/update")
-    public ResultBean update(@RequestBody Thing thing) {
-        thingService.update(thing);
+    public ResultBean update(@RequestBody ThingDto thingDto) {
+        thingService.update(thingDto);
         return ResultUtils.success();
     }
 

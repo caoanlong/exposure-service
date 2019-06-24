@@ -11,9 +11,9 @@
         <result column="views" jdbcType="INTEGER" property="views" />
         <result column="likes" jdbcType="INTEGER" property="likes" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-        <result column="create_id" jdbcType="INTEGER" property="createBy" />
+        <result column="create_id" jdbcType="INTEGER" property="createId" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-        <result column="update_id" jdbcType="INTEGER" property="updateBy" />
+        <result column="update_id" jdbcType="INTEGER" property="updateId" />
         <result column="create_ip" jdbcType="VARCHAR" property="createIp" />
         <result column="update_ip" jdbcType="VARCHAR" property="updateIp" />
     </resultMap>
@@ -108,7 +108,7 @@
         </set>
         where id = #{id}
     </update>
-    <delete id="del" parameterType="java.lang.Integer">
+    <delete id="del" parameterType="java.lang.Long">
         delete from `thing` where id = #{id}
     </delete>
 </mapper>

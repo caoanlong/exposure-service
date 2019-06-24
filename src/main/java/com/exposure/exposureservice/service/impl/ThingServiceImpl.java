@@ -57,7 +57,7 @@ public class ThingServiceImpl implements ThingService {
             throw new CommonException(ErrorCode.TITLE_NOTNULL);
         if (StringUtils.isBlank(thingDto.getInfo()))
             throw new CommonException(ErrorCode.INFO_NOTNULL);
-        if (null != thingDto.getImages())
+        if (null == thingDto.getImages())
             throw new CommonException(ErrorCode.IMG_NOTNULL);
         Thing thing = new Thing();
         StringBuilder stringBuilder = new StringBuilder();
@@ -71,6 +71,9 @@ public class ThingServiceImpl implements ThingService {
         String imagesStr = stringBuilder.toString();
         Long id = snowFlake.nextId();
         thing.setId(id);
+        thing.setTitle(thingDto.getTitle());
+        thing.setType(thingDto.getType());
+        thing.setInfo(thingDto.getInfo());
         thing.setImages(imagesStr);
         String avatar = images.get(0);
         thing.setAvatar(avatar);
@@ -81,9 +84,27 @@ public class ThingServiceImpl implements ThingService {
 
     @Override
     @Transactional
-    public void update(Thing thing) {
-        if (null == thing.getId())
+    public void update(ThingDto thingDto) {
+        Long id = thingDto.getId();
+        if (null == id)
             throw new CommonException(ErrorCode.ID_NOTNULL);
+        Thing thing = new Thing();
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> images = thingDto.getImages();
+        for (int i = 0; i < images.size(); i++) {
+            stringBuilder.append(images.get(i));
+            if (i < images.size() - 1) {
+                stringBuilder.append(",");
+            }
+        }
+        String imagesStr = stringBuilder.toString();
+        thing.setId(id);
+        thing.setTitle(thingDto.getTitle());
+        thing.setType(thingDto.getType());
+        thing.setInfo(thingDto.getInfo());
+        thing.setImages(imagesStr);
+        String avatar = images.get(0);
+        thing.setAvatar(avatar);
         thingRepostory.update(thing);
     }
 

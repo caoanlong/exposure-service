@@ -1,4 +1,4 @@
-package com.exposure.exposureservice.controller.app;
+package com.exposure.exposureservice.controller;
 
 import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.entity.Member;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Api(value = "MemberController", description = "会员管理")
 @RestController
-@RequestMapping(value = {"/app/member"})
+@RequestMapping(value = {"/app/member", "/admin/member"})
 public class MemberController {
     @Autowired
     private MemberService memberService;
@@ -41,11 +41,11 @@ public class MemberController {
     @ApiOperation(value = "findList", notes = "根据分页查询会员列表", response = Member.class, responseContainer = "List")
     @GetMapping("/findList")
     public ResultBean findList(
-            @RequestParam(value = "mobile", required = false) String mobile,
+            @RequestParam(value = "userName", required = false) String userName,
             @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize
     ) {
-        PageBean<List<Member>> list = memberService.findList(mobile, pageIndex, pageSize);
+        PageBean<List<Member>> list = memberService.findList(userName, pageIndex, pageSize);
         return ResultUtils.success(list);
     }
 
