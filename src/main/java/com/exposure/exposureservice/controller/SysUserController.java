@@ -5,10 +5,10 @@ import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.entity.SysUser;
 import com.exposure.exposureservice.entity.exception.CommonException;
+import com.exposure.exposureservice.entity.req.SysUserDto;
 import com.exposure.exposureservice.enums.ErrorCode;
 import com.exposure.exposureservice.service.SysUserService;
 import com.exposure.exposureservice.utils.JwtUtils;
-import com.exposure.exposureservice.utils.MD5Utils;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @Api(value = "SysUserController", description = "系统用户管理")
+//@CrossOrigin
 @RestController
 @RequestMapping(value = {"/admin/sysUser"})
 public class SysUserController {
@@ -88,40 +89,26 @@ public class SysUserController {
         return ResultUtils.success();
     }
 
-    @ApiOperation(value = "auth", notes = "系统用户认证")
-    @PostMapping("/auth")
-    public ResultBean auth(HttpServletResponse response, @RequestBody  Map<String, String> map) {
-        String userName = map.get("userName");
-        String password = map.get("password");
-        String type = map.get("type");
+    @ApiOperation(value = "login", notes = "系统用户登录")
+    @PostMapping("/login")
+    public ResultBean login(HttpServletResponse response, @RequestBody SysUserDto sysUserDto) {
+        String userName = sysUserDto.getUserName();
+        String password = sysUserDto.getPassword();
 
         if (StringUtils.isBlank(userName))
             throw new CommonException(ErrorCode.USERNAME_NOTNULL);
         if (StringUtils.isBlank(password))
             throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
 
-        String pwd = MD5Utils.md5(password, Constant.MD5_SALT);
-        SysUser sysUser = sysUserService.findByNameAndPassword(userName, pwd);
-
-        if (type.equals("login")) {
-            if (null == sysUser) {
-                throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
-            }
-            return authReturn(response, sysUser.getId().toString());
+        SysUser sysUser = sysUserService.findByNameAndPassword(userName, password);
+        if (null == sysUser) {
+            throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
         }
-        if (null != sysUser) {
-            throw new CommonException(ErrorCode.USERNAME_EXIST);
-        }
-        SysUser sysUser1 = new SysUser();
-        sysUser1.setUserName(userName);
-        sysUser1.setPassword(pwd);
-        sysUserService.insert(sysUser1);
-        Long id = sysUser1.getId();
-        return authReturn(response, id.toString());
+        return authReturn(response, sysUser.getId().toString());
     }
 
     private ResultBean authReturn(HttpServletResponse response, String sysUserId) {
-        String jwt = jwtUtils.createJWT(Constant.JWT_ID, "nimadebi1234fuckgouride", sysUserId, Constant.JWT_TTL);
+        String jwt = jwtUtils.createJWT(Constant.JWT_ID, "se_nimadebi1234_fuckgouride_gouride", sysUserId, Constant.JWT_TTL);
         response.addHeader("Access-Control-Expose-Headers", "Authorization");
         response.addHeader("Authorization", jwt);
         return ResultUtils.success();

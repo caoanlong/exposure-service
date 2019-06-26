@@ -19,10 +19,30 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <select id="findAll" resultMap="BaseMap">
-        select * from `sys_user`
+        select
+          id,
+          user_name,
+          mobile,
+          email,
+          role_id,
+          create_user_id,
+          update_user_id,
+          create_time,
+          update_time
+        from `sys_user`
     </select>
     <select id="findList" resultMap="BaseMap">
-        select * from `sys_user`
+        select
+          id,
+          user_name,
+          mobile,
+          email,
+          role_id,
+          create_user_id,
+          update_user_id,
+          create_time,
+          update_time
+        from `sys_user`
         <if test="userName != null">
             where user_name like '%' #{userName} '%'
         </if>
@@ -30,7 +50,17 @@
         limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" resultMap="BaseMap">
-        select * from `sys_user` where id = #{id}
+        select
+          id,
+          user_name,
+          mobile,
+          email,
+          role_id,
+          create_user_id,
+          update_user_id,
+          create_time,
+          update_time
+        from `sys_user` where id = #{id}
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(1) from `sys_user`
@@ -62,7 +92,7 @@
         )
     </insert>
     <update id="update" parameterType="com.exposure.exposureservice.entity.SysUser">
-        update `member`
+        update `sys_user`
         <set>
             <if test="userName != null">
                 user_name = #{userName},
@@ -74,15 +104,17 @@
                 password = #{password},
             </if>
             <if test="avatar != null">
-                avatar = #{avatar}
+                avatar = #{avatar},
             </if>
             <if test="email != null">
-                email = #{email}
+                email = #{email},
             </if>
             <if test="roleId != null">
                 role_id = #{roleId},
             </if>
-            update_user_id = #{updateUserId},
+            <if test="updateUserId != null">
+                update_user_id = #{updateUserId},
+            </if>
             update_time = #{updateTime}
         </set>
         where id = #{id}

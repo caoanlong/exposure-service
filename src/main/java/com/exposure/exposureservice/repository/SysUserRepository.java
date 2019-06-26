@@ -15,7 +15,7 @@ public interface SysUserRepository {
             @Param("pageSize") Integer pageSize
     );
     SysUser findById(Long id);
-    Long total(String userName);
+    Long total(@Param("userName") String userName);
     void insert(SysUser sysUser);
     void update(SysUser sysUser);
     void del(Long id);

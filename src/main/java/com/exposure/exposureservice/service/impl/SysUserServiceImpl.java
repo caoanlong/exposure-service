@@ -46,6 +46,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void insert(SysUser sysUser) {
         Long id = snowFlake.nextId();
+        sysUser.setId(id);
         sysUser.setCreateTime(new Date());
         sysUserRepository.insert(sysUser);
     }
