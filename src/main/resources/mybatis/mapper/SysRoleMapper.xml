@@ -74,7 +74,7 @@
         </set>
         where id = #{id}
     </update>
-    <delete id="del" parameterType="java.lang.Integer">
+    <delete id="del" parameterType="java.lang.Long">
         delete from `sys_roles` where id = #{id}
     </delete>
 </mapper>

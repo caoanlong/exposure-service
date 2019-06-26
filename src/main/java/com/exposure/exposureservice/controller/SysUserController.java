@@ -5,7 +5,6 @@ import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.entity.SysUser;
 import com.exposure.exposureservice.entity.exception.CommonException;
-import com.exposure.exposureservice.entity.req.SysUserDto;
 import com.exposure.exposureservice.enums.ErrorCode;
 import com.exposure.exposureservice.service.SysUserService;
 import com.exposure.exposureservice.utils.JwtUtils;
@@ -91,20 +90,20 @@ public class SysUserController {
 
     @ApiOperation(value = "login", notes = "系统用户登录")
     @PostMapping("/login")
-    public ResultBean login(HttpServletResponse response, @RequestBody SysUserDto sysUserDto) {
-        String userName = sysUserDto.getUserName();
-        String password = sysUserDto.getPassword();
+    public ResultBean login(HttpServletResponse response, @RequestBody SysUser sysUser) {
+        String userName = sysUser.getUserName();
+        String password = sysUser.getPassword();
 
         if (StringUtils.isBlank(userName))
             throw new CommonException(ErrorCode.USERNAME_NOTNULL);
         if (StringUtils.isBlank(password))
             throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
 
-        SysUser sysUser = sysUserService.findByNameAndPassword(userName, password);
-        if (null == sysUser) {
+        SysUser user = sysUserService.findByNameAndPassword(userName, password);
+        if (null == user) {
             throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
         }
-        return authReturn(response, sysUser.getId().toString());
+        return authReturn(response, user.getId().toString());
     }
 
     private ResultBean authReturn(HttpServletResponse response, String sysUserId) {
