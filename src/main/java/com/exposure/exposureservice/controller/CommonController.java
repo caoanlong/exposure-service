@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "CommonController", description = "通用")
-//@CrossOrigin
+@CrossOrigin
 @RestController
 @RequestMapping(value = {"/admin/common", "/app/common"})
 public class CommonController {
