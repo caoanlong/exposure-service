@@ -1,5 +1,6 @@
 package com.exposure.exposureservice.controller;
 
+import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.enums.ErrorCode;
 import com.exposure.exposureservice.utils.FileUtils;
 import com.exposure.exposureservice.utils.ResultUtils;
@@ -23,15 +24,16 @@ public class CommonController {
 
     @ApiOperation(value = "upload", notes = "上传图片")
     @PostMapping("/upload")
-    public Object imageUpload(@RequestParam("image") MultipartFile[] files) {
+    public ResultBean<Object> imageUpload(@RequestParam("image") MultipartFile[] files) {
         List<String> uploads = new ArrayList<>();
         for (MultipartFile file: files) {
             String upload = FileUtils.upload(file, filePath, file.getOriginalFilename());
             uploads.add(upload);
         }
-        if (null != uploads) {
+        if (null != uploads || uploads.isEmpty()) {
             return ResultUtils.success(uploads);
+        } else {
+            return ResultUtils.error(ErrorCode.IMG_UPLOAD_ERROR);
         }
-        return ResultUtils.error(ErrorCode.IMG_UPLOAD_ERROR);
     }
 }

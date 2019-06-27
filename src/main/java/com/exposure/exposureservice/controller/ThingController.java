@@ -22,13 +22,13 @@ public class ThingController {
     private ThingService thingService;
 
     @GetMapping("/findAll")
-    public ResultBean findAll() {
+    public ResultBean<Object> findAll() {
         List<Thing> list = thingService.findAll();
         return ResultUtils.success(list);
     }
 
     @GetMapping("/findList")
-    public ResultBean findList(
+    public ResultBean<Object> findList(
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "type", required = false) Integer type,
             @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
@@ -39,26 +39,25 @@ public class ThingController {
     }
 
     @GetMapping("/findById")
-    public ResultBean findById(@RequestParam("id") Long id) {
+    public ResultBean<Object> findById(@RequestParam("id") Long id) {
         Thing thing = thingService.findById(id);
         return ResultUtils.success(thing);
     }
 
     @PostMapping("/add")
-    public ResultBean add(@RequestBody ThingDto thingDto) {
-
+    public ResultBean<Object> add(@RequestBody ThingDto thingDto) {
         thingService.insert(thingDto);
         return ResultUtils.success();
     }
 
     @PostMapping("/update")
-    public ResultBean update(@RequestBody ThingDto thingDto) {
+    public ResultBean<Object> update(@RequestBody ThingDto thingDto) {
         thingService.update(thingDto);
         return ResultUtils.success();
     }
 
     @PostMapping("/del")
-    public ResultBean del(@RequestBody Map<String, Long> map) {
+    public ResultBean<Object> del(@RequestBody Map<String, Long> map) {
         Long id = map.get("id");
         thingService.del(id);
         return ResultUtils.success();

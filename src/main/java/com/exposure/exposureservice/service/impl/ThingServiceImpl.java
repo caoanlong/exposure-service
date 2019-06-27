@@ -75,7 +75,10 @@ public class ThingServiceImpl implements ThingService {
         thing.setType(thingDto.getType());
         thing.setInfo(thingDto.getInfo());
         thing.setImages(imagesStr);
-        String avatar = images.get(0);
+        String avatar = thingDto.getAvatar();
+        if (StringUtils.isBlank(avatar)) {
+            avatar = images.get(0);
+        }
         thing.setAvatar(avatar);
         thing.setViews(0);
         thing.setCreateTime(new Date());
@@ -103,8 +106,7 @@ public class ThingServiceImpl implements ThingService {
         thing.setType(thingDto.getType());
         thing.setInfo(thingDto.getInfo());
         thing.setImages(imagesStr);
-        String avatar = images.get(0);
-        thing.setAvatar(avatar);
+        thing.setAvatar(thingDto.getAvatar());
         thingRepostory.update(thing);
     }
 
