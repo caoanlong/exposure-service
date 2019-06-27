@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -26,14 +25,14 @@ public class SysRoleController {
 
     @ApiOperation(value = "findAll", notes = "查询所有系统角色", response = SysRole.class, responseContainer = "List")
     @GetMapping("/findAll")
-    public ResultBean findAll() {
+    public ResultBean<Object> findAll() {
         List<SysRole> list = sysRoleService.findAll();
         return ResultUtils.success(list);
     }
 
     @ApiOperation(value = "findList", notes = "根据分页查询系统角色列表", response = SysRole.class, responseContainer = "List")
     @GetMapping("/findList")
-    public ResultBean findList(
+    public ResultBean<Object> findList(
             @RequestParam(value = "roleName", required = false) String roleName,
             @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize
@@ -44,28 +43,28 @@ public class SysRoleController {
 
     @ApiOperation(value = "findById", notes = "根据ID查询系统角色详情", response = SysRole.class)
     @GetMapping("/findById")
-    public ResultBean findById(@RequestParam("id") Long id) {
+    public ResultBean<Object> findById(@RequestParam("id") Long id) {
         SysRole sysRole = sysRoleService.findById(id);
         return ResultUtils.success(sysRole);
     }
 
     @ApiOperation(value = "add", notes = "添加系统角色")
     @PostMapping("/add")
-    public ResultBean add(@RequestBody SysRole sysRole) {
+    public ResultBean<Object> add(@RequestBody SysRole sysRole) {
         sysRoleService.insert(sysRole);
         return ResultUtils.success();
     }
 
     @ApiOperation(value = "update", notes = "修改系统角色")
     @PostMapping("/update")
-    public ResultBean update(@RequestBody SysRole sysRole) {
+    public ResultBean<Object> update(@RequestBody SysRole sysRole) {
         sysRoleService.update(sysRole);
         return ResultUtils.success();
     }
 
     @ApiOperation(value = "del", notes = "删除系统角色")
     @PostMapping("/del")
-    public ResultBean del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Long> map) {
+    public ResultBean<Object> del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Long> map) {
         Long id = map.get("id");
         sysRoleService.del(id);
         return ResultUtils.success();

@@ -8,6 +8,7 @@ public class ThingDto implements Serializable {
     private String title;
     private Integer type;
     private String info;
+    private String avatar;
     private List<String> images;
 
     public Long getId() {
@@ -40,6 +41,14 @@ public class ThingDto implements Serializable {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public List<String> getImages() {
