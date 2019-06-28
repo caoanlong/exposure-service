@@ -2,6 +2,7 @@ package com.exposure.exposureservice.service.impl;
 
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.Thing;
+import com.exposure.exposureservice.entity.ThingLabel;
 import com.exposure.exposureservice.entity.exception.CommonException;
 import com.exposure.exposureservice.entity.req.ThingDto;
 import com.exposure.exposureservice.enums.ErrorCode;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +71,7 @@ public class ThingServiceImpl implements ThingService {
             }
         }
         String imagesStr = stringBuilder.toString();
+
         Long id = snowFlake.nextId();
         thing.setId(id);
         thing.setTitle(thingDto.getTitle());
@@ -83,6 +86,18 @@ public class ThingServiceImpl implements ThingService {
         thing.setViews(0);
         thing.setCreateTime(new Date());
         thingRepostory.insert(thing);
+
+        List<Integer> labelIds = thingDto.getLabelIds();
+        if (!labelIds.isEmpty()) {
+            List<ThingLabel> thingLabels = new ArrayList<>();
+            for (int i = 0; i < labelIds.size(); i++) {
+                ThingLabel thingLabel = new ThingLabel();
+                thingLabel.setLabelId(labelIds.get(i));
+                thingLabel.setThingId(id);
+                thingLabels.add(thingLabel);
+            }
+            thingRepostory.insertThingLabels(thingLabels);
+        }
     }
 
     @Override

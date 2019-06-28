@@ -2,6 +2,7 @@ package com.exposure.exposureservice.service;
 
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.Thing;
+import com.exposure.exposureservice.entity.ThingLabel;
 import com.exposure.exposureservice.entity.req.ThingDto;
 
 import java.util.List;

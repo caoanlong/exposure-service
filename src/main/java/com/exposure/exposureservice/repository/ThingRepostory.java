@@ -1,6 +1,7 @@
 package com.exposure.exposureservice.repository;
 
 import com.exposure.exposureservice.entity.Thing;
+import com.exposure.exposureservice.entity.ThingLabel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +22,6 @@ public interface ThingRepostory {
     void insert(Thing thing);
     void update(Thing thing);
     void del(Long id);
+    void insertThingLabels(List<ThingLabel> thingLabels);
+    void delThingLabelByThingIds(List<Long> thingIds);
 }

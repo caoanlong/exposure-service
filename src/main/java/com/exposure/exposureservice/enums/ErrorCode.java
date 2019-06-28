@@ -110,6 +110,11 @@ public enum ErrorCode {
     TYPE_NOTNULL(1022, "type不能为空"),
 
     /**
+     * 名称不能为空
+     */
+    NAMEX_NOT_NULL(1023, "名称不能为空"),
+
+    /**
      * 图片不能为空
      */
     IMG_NOTNULL(2000, "图片不能为空"),

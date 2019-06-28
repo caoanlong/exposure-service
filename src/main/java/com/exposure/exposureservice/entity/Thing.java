@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 事物（公司或个人）
@@ -25,6 +26,7 @@ public class Thing implements Serializable {
     private Long updateId;
     private String createIp;
     private String updateIp;
+    private List<Label> labels;
 
     public Long getId() {
         return id;
@@ -136,5 +138,13 @@ public class Thing implements Serializable {
 
     public void setUpdateIp(String updateIp) {
         this.updateIp = updateIp;
+    }
+
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
     }
 }

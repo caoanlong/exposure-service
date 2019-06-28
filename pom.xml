@@ -66,20 +66,6 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
             <version>RELEASE</version>
         </dependency>
-        <!-- 添加thymeleaf模版引擎 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>nz.net.ultraq.thymeleaf</groupId>
-            <artifactId>thymeleaf-layout-dialect</artifactId>
-        </dependency>
         <!-- 添加swagger -->
         <dependency>
             <groupId>io.springfox</groupId>

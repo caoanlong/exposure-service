@@ -16,6 +16,11 @@
         <result column="update_id" jdbcType="INTEGER" property="updateId" />
         <result column="create_ip" jdbcType="VARCHAR" property="createIp" />
         <result column="update_ip" jdbcType="VARCHAR" property="updateIp" />
+        <collection property="labels" ofType="com.exposure.exposureservice.entity.Label">
+            <id column="label_id" jdbcType="INTEGER" property="labelId"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="color" jdbcType="VARCHAR" property="color"/>
+        </collection>
     </resultMap>
     <select id="findAll" resultMap="BaseMap">
         select * from `thing`
@@ -33,10 +38,20 @@
         order by create_time desc
         limit #{pageStart}, #{pageSize}
     </select>
-    <select id="findById" resultMap="BaseMap">
-        select * from `thing` where id = #{id}
+    <select id="findById" resultMap="BaseMap" parameterType="java.lang.Long">
+        select
+          `thing`.*,
+          label.label_id,
+          label.name,
+          label.color
+        from
+          `thing`,`label`,`thing_label`
+        where
+          `thing`.id = #{id}
+          and `thing_label`.thing_id = #{id}
+          and `label`.label_id = `thing_label`.label_id
     </select>
-    <update id="updateViews" parameterType="java.lang.Integer">
+    <update id="updateViews" parameterType="java.lang.Long">
         update `thing`
         <set>
             views = views + 1
@@ -54,7 +69,7 @@
             and `type` = #{type}
         </if>
     </select>
-    <insert id="insert" parameterType="com.exposure.exposureservice.entity.Member">
+    <insert id="insert" parameterType="com.exposure.exposureservice.entity.Thing" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into `thing` (
           id,
           title,
@@ -81,7 +96,25 @@
           #{createIp}
         )
     </insert>
-    <update id="update" parameterType="com.exposure.exposureservice.entity.Member">
+    <insert id="insertThingLabels" parameterType="java.util.List">
+        insert into `thing_label` (
+          `thing_id`,
+          `label_id`
+        ) values
+        <foreach collection="list" item="item" index="index"  separator=",">
+            (
+            #{item.thingId},
+            #{item.labelId}
+            )
+        </foreach>
+    </insert>
+    <delete id="delThingLabelByThingIds" parameterType="java.util.List">
+      delete from `thing_label` where thing_id in
+      <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </delete>
+    <update id="update" parameterType="com.exposure.exposureservice.entity.Thing">
         update `thing`
         <set>
             <if test="title != null">

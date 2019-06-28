@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 @Api(value = "SysUserController", description = "系统用户管理")
-//@CrossOrigin
 @RestController
 @RequestMapping(value = {"/admin/sysUser"})
 public class SysUserController {

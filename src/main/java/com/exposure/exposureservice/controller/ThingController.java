@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 @Api(value = "ThingController", description = "事物管理")
-//@CrossOrigin
 @RestController
 @RequestMapping(value = {"/app/thing", "/admin/thing"})
 public class ThingController {

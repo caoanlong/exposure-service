@@ -10,6 +10,7 @@ public class ThingDto implements Serializable {
     private String info;
     private String avatar;
     private List<String> images;
+    private List<Integer> labelIds;
 
     public Long getId() {
         return id;
@@ -57,5 +58,13 @@ public class ThingDto implements Serializable {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public List<Integer> getLabelIds() {
+        return labelIds;
+    }
+
+    public void setLabelIds(List<Integer> labelIds) {
+        this.labelIds = labelIds;
     }
 }
