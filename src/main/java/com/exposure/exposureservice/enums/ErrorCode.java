@@ -45,6 +45,46 @@ public enum ErrorCode {
     USERNAME_EXIST(109, "用户已存在"),
 
     /**
+     * 邮箱不能为空
+     */
+    EMAIL_NOTNULL(110, "邮箱不能为空"),
+
+    /**
+     * 邮箱格式错误
+     */
+    EMAIL_ERROR(111, "邮箱格式错误"),
+
+    /**
+     * 邮箱已存在
+     */
+    EMAIL_EXIST(112, "邮箱已存在"),
+
+    /**
+     * token不能为空
+     */
+    TOKEN_NOTNULL(113, "token不能为空"),
+
+    /**
+     * 发送失败
+     */
+    SEND_FAIL(114, "发送失败"),
+
+    /**
+     * code不能为空
+     */
+    CODE_NOTNULL(115, "code不能为空"),
+
+    /**
+     * 验证过期
+     */
+    VALID_EXPIRE(116, "验证过期"),
+
+    /**
+     * 邮箱不存在
+     */
+    EMAIL_NOT_EXIST(117, "邮箱不存在"),
+
+    /**
      * 角色不能为空
      */
     ROLE_NOTNULL(1000, "角色不能为空"),
@@ -113,6 +153,11 @@ public enum ErrorCode {
      * 名称不能为空
      */
     NAMEX_NOT_NULL(1023, "名称不能为空"),
+
+    /**
+     * 标签不能为空
+     */
+    LABEL_NOT_NULL(1024, "标签不能为空"),
 
     /**
      * 图片不能为空

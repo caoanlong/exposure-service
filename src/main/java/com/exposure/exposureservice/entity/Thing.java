@@ -20,12 +20,18 @@ public class Thing implements Serializable {
     private String images;
     private Integer views;
     private Integer likes;
+    private Integer sex;
+    private Date birthDay;
+    private String area;
     private Date createTime;
     private Long createId;
     private Date updateTime;
     private Long updateId;
+    private String createUserName;
+    private String updateUserName;
     private String createIp;
     private String updateIp;
+    private Integer createType;
     private List<Label> labels;
 
     public Long getId() {
@@ -92,6 +98,30 @@ public class Thing implements Serializable {
         this.likes = likes;
     }
 
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -124,6 +154,22 @@ public class Thing implements Serializable {
         this.updateId = updateId;
     }
 
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
+
     public String getCreateIp() {
         return createIp;
     }
@@ -138,6 +184,14 @@ public class Thing implements Serializable {
 
     public void setUpdateIp(String updateIp) {
         this.updateIp = updateIp;
+    }
+
+    public Integer getCreateType() {
+        return createType;
+    }
+
+    public void setCreateType(Integer createType) {
+        this.createType = createType;
     }
 
     public List<Label> getLabels() {

@@ -22,9 +22,14 @@ public interface MemberRepository {
     void del(Long id);
 
     List<Member> findByName(@Param("userName") String userName);
+    List<Member> findByEmail(@Param("email") String email);
 
     Member findByNameAndPassword(
             @Param("userName") String userName,
+            @Param("password") String password
+    );
+    Member findByEmailAndPassword(
+            @Param("email") String email,
             @Param("password") String password
     );
 }

@@ -1,4 +1,4 @@
-package com.exposure.exposureservice.controller;
+package com.exposure.exposureservice.controller.admin;
 
 import com.exposure.exposureservice.entity.Label;
 import com.exposure.exposureservice.entity.PageBean;
@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 @Api(value = "LabelController", description = "标签管理")
-@CrossOrigin
 @RestController
-@RequestMapping(value = {"/admin/label"})
+@RequestMapping("/admin/label")
 public class LabelController {
 
     @Autowired

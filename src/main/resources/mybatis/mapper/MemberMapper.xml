@@ -10,6 +10,7 @@
         <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
         <result column="real_name" jdbcType="VARCHAR" property="realName" />
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="is_active" jdbcType="INTEGER" property="isActive" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
         <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
@@ -23,6 +24,7 @@
           nick_name,
           real_name,
           avatar,
+          is_active,
           create_time,
           last_login_ip
         from `member`
@@ -36,6 +38,7 @@
             nick_name,
             real_name,
             avatar,
+            is_active,
             create_time,
             last_login_ip
         from `member`
@@ -54,6 +57,7 @@
           nick_name,
           real_name,
           avatar,
+          is_active,
           create_time,
           last_login_ip
         from `member` where id = #{id}
@@ -74,6 +78,7 @@
           nick_name,
           real_name,
           avatar,
+          is_active,
           create_time,
           last_login_ip,
           last_login_time
@@ -86,6 +91,7 @@
           #{nickName},
           #{realName},
           #{avatar},
+          #{isActive},
           #{createTime},
           #{lastLoginIp},
           #{lastLoginTime}
@@ -107,7 +113,10 @@
                 avatar = #{avatar}
             </if>
             <if test="mobile != null">
-                avatar = #{avatar}
+                mobile = #{mobile}
+            </if>
+            <if test="isActive != null">
+                is_active = #{isActive}
             </if>
         </set>
         where id = #{id}
@@ -120,5 +129,11 @@
     </select>
     <select id="findByName" resultMap="BaseMap">
         select * from `member` where user_name = #{userName}
+    </select>
+    <select id="findByEmailAndPassword" resultMap="BaseMap">
+        select * from `member` where email = #{email} and password = #{password}
+    </select>
+    <select id="findByEmail" resultMap="BaseMap">
+        select * from `member` where email = #{email}
     </select>
 </mapper>

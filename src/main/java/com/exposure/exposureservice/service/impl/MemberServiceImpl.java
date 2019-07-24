@@ -67,13 +67,32 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public void active(Long id, Integer isActive) {
+        Member member = new Member();
+        member.setId(id);
+        member.setIsActive(isActive);
+        memberRepository.update(member);
+    }
+
+    @Override
     public List<Member> findByName(String userName) {
         return memberRepository.findByName(userName);
+    }
+
+    @Override
+    public List<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 
     @Override
     public Member findByNameAndPassword(String userName, String password) {
         String pwd = MD5Utils.md5(password, Constant.MD5_SALT);
         return memberRepository.findByNameAndPassword(userName, pwd);
+    }
+
+    @Override
+    public Member findByEmailAndPassword(String email, String password) {
+        String pwd = MD5Utils.md5(password, Constant.MD5_SALT);
+        return memberRepository.findByEmailAndPassword(email, pwd);
     }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class ThingLabel implements Serializable {
     private Long id;
     private Long thingId;
-    private Integer labelId;
+    private Long labelId;
 
     public Long getId() {
         return id;
@@ -23,11 +23,11 @@ public class ThingLabel implements Serializable {
         this.thingId = thingId;
     }
 
-    public Integer getLabelId() {
+    public Long getLabelId() {
         return labelId;
     }
 
-    public void setLabelId(Integer labelId) {
+    public void setLabelId(Long labelId) {
         this.labelId = labelId;
     }
 }

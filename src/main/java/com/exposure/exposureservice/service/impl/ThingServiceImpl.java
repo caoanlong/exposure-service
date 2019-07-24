@@ -10,6 +10,7 @@ import com.exposure.exposureservice.repository.ThingRepostory;
 import com.exposure.exposureservice.service.ThingService;
 import com.exposure.exposureservice.utils.SnowFlake;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +29,23 @@ public class ThingServiceImpl implements ThingService {
     private ThingRepostory thingRepostory;
 
     @Override
-    public List<Thing> findAll() {
-        return thingRepostory.findAll();
+    public List<Thing> findAll(String title) {
+        return thingRepostory.findAll(title);
     }
 
     @Override
-    public PageBean<List<Thing>> findList(String title, Integer type, Integer pageIndex, Integer pageSize) {
+    public PageBean<List<Thing>> findList(
+            String title,
+            Integer type,
+            Integer sex,
+            Date birthDay,
+            String area,
+            Integer pageIndex,
+            Integer pageSize
+    ) {
         Integer pageStart = (pageIndex - 1) * pageSize;
-        List<Thing> things = thingRepostory.findList(title, type, pageStart, pageSize);
-        Long total = thingRepostory.total(title, type);
+        List<Thing> things = thingRepostory.findList(title, birthDay, type, sex, area, pageStart, pageSize);
+        Long total = thingRepostory.total(title, birthDay, type, sex, area);
         PageBean<List<Thing>> pageBean = new PageBean<>();
         pageBean.setList(things);
         pageBean.setPageIndex(pageIndex);
@@ -76,7 +85,11 @@ public class ThingServiceImpl implements ThingService {
         thing.setId(id);
         thing.setTitle(thingDto.getTitle());
         thing.setType(thingDto.getType());
+        thing.setBirthDay(thingDto.getBirthDay());
+        thing.setSex(thingDto.getSex());
+        thing.setArea(thingDto.getArea());
         thing.setInfo(thingDto.getInfo());
+        thing.setCreateId(thingDto.getCreateUserId());
         thing.setImages(imagesStr);
         String avatar = thingDto.getAvatar();
         if (StringUtils.isBlank(avatar)) {
@@ -87,7 +100,7 @@ public class ThingServiceImpl implements ThingService {
         thing.setCreateTime(new Date());
         thingRepostory.insert(thing);
 
-        List<Integer> labelIds = thingDto.getLabelIds();
+        List<Long> labelIds = thingDto.getLabelIds();
         if (!labelIds.isEmpty()) {
             List<ThingLabel> thingLabels = new ArrayList<>();
             for (int i = 0; i < labelIds.size(); i++) {
@@ -106,6 +119,19 @@ public class ThingServiceImpl implements ThingService {
         Long id = thingDto.getId();
         if (null == id)
             throw new CommonException(ErrorCode.ID_NOTNULL);
+        List<Long> labelIds = thingDto.getLabelIds();
+        if (null == labelIds || labelIds.isEmpty())
+            throw new CommonException(ErrorCode.LABEL_NOT_NULL);
+        thingRepostory.delThingLabelByThingId(id);
+        List<ThingLabel> thingLabels = new ArrayList<>();
+        for (int i = 0; i < labelIds.size(); i++) {
+            ThingLabel thingLabel = new ThingLabel();
+            thingLabel.setLabelId(labelIds.get(i));
+            thingLabel.setThingId(id);
+            thingLabels.add(thingLabel);
+        }
+        thingRepostory.insertThingLabels(thingLabels);
+
         Thing thing = new Thing();
         StringBuilder stringBuilder = new StringBuilder();
         List<String> images = thingDto.getImages();
@@ -119,7 +145,12 @@ public class ThingServiceImpl implements ThingService {
         thing.setId(id);
         thing.setTitle(thingDto.getTitle());
         thing.setType(thingDto.getType());
+        thing.setBirthDay(thingDto.getBirthDay());
+        thing.setSex(thingDto.getSex());
+        thing.setArea(thingDto.getArea());
         thing.setInfo(thingDto.getInfo());
+        thing.setUpdateId(thingDto.getUpdateUserId());
+        thing.setUpdateTime(new Date());
         thing.setImages(imagesStr);
         thing.setAvatar(thingDto.getAvatar());
         thingRepostory.update(thing);

@@ -1,11 +1,9 @@
-package com.exposure.exposureservice.controller;
+package com.exposure.exposureservice.controller.admin;
 
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.entity.SysRole;
-import com.exposure.exposureservice.entity.SysUser;
 import com.exposure.exposureservice.service.SysRoleService;
-import com.exposure.exposureservice.service.SysUserService;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +16,7 @@ import java.util.Map;
 
 @Api(value = "SysRoleController", description = "系统角色管理")
 @RestController
-@RequestMapping(value = {"/admin/sysRole"})
+@RequestMapping("/admin/sysRole")
 public class SysRoleController {
     @Autowired
     private SysRoleService sysRoleService;

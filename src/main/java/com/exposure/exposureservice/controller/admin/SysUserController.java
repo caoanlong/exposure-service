@@ -1,4 +1,4 @@
-package com.exposure.exposureservice.controller;
+package com.exposure.exposureservice.controller.admin;
 
 import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.entity.PageBean;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Api(value = "SysUserController", description = "系统用户管理")
 @RestController
-@RequestMapping(value = {"/admin/sysUser"})
+@RequestMapping("/admin/sysUser")
 public class SysUserController {
 
     @Autowired

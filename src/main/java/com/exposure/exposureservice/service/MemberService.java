@@ -13,6 +13,10 @@ public interface MemberService {
     void update(Member member);
     void del(Long id);
 
+    void active(Long id, Integer isActive);
+
     List<Member> findByName(String userName);
+    List<Member> findByEmail(String email);
     Member findByNameAndPassword(String userName, String password);
+    Member findByEmailAndPassword(String email, String password);
 }

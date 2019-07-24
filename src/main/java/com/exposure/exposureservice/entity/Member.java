@@ -20,6 +20,7 @@ public class Member implements Serializable {
     private String nickName;
     private String realName;
     private String avatar;
+    private Integer isActive;
     private Date createTime;
     private String lastLoginIp;
     private Date lastLoginTime;
@@ -87,6 +88,14 @@ public class Member implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
     }
 
     public Date getCreateTime() {

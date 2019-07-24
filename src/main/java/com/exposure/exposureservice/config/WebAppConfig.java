@@ -21,8 +21,10 @@ public class WebAppConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/app/member/login",
                         "/app/member/register",
-                        "/app/thing/findList",
-                        "/app/thing/findById"
+                        "/app/member/active",
+                        "/app/member/getEmailCode",
+                        "/app/member/resetPassword",
+                        "/app/thing/findList"
                 );
     }
 }

@@ -10,12 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "CommonController", description = "通用")
 @RestController
-@RequestMapping(value = {"/admin/common", "/app/common"})
+@RequestMapping(value = {"/admin/common", "/app/common", "/telegram"})
 public class CommonController {
     @Value("${file.path}")
     private String filePath;
@@ -33,5 +34,12 @@ public class CommonController {
         } else {
             return ResultUtils.error(ErrorCode.IMG_UPLOAD_ERROR);
         }
+    }
+
+    @RequestMapping("/auth")
+    public ResultBean<Object> telegramAuth(HttpServletRequest request) {
+        System.out.println(request);
+        System.out.println(request.toString());
+        return ResultUtils.success();
     }
 }

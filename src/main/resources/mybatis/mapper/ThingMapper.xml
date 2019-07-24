@@ -10,12 +10,17 @@
         <result column="images" jdbcType="VARCHAR" property="images" />
         <result column="views" jdbcType="INTEGER" property="views" />
         <result column="likes" jdbcType="INTEGER" property="likes" />
+        <result column="sex" jdbcType="INTEGER" property="sex" />
+        <result column="birth_day" jdbcType="TIMESTAMP" property="birthDay" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="create_id" jdbcType="INTEGER" property="createId" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="update_id" jdbcType="INTEGER" property="updateId" />
         <result column="create_ip" jdbcType="VARCHAR" property="createIp" />
         <result column="update_ip" jdbcType="VARCHAR" property="updateIp" />
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
         <collection property="labels" ofType="com.exposure.exposureservice.entity.Label">
             <id column="label_id" jdbcType="INTEGER" property="labelId"/>
             <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -23,14 +28,50 @@
         </collection>
     </resultMap>
     <select id="findAll" resultMap="BaseMap">
-        select * from `thing`
-    </select>
-    <select id="findList" resultMap="BaseMap">
-        select * from `thing`
+        select
+          id, title, `type`, avatar
+        from `thing`
         where
         1=1
         <if test="title != null">
             and title like '%' #{title} '%'
+        </if>
+    </select>
+    <select id="findList" resultMap="BaseMap">
+        select
+        `thing`.id,
+        `thing`.title,
+        `thing`.type,
+        `thing`.info,
+        `thing`.avatar,
+        `thing`.views,
+        `thing`.likes,
+        `thing`.area,
+        `thing`.sex,
+        `thing`.birth_day,
+        `thing`.create_time,
+        `thing`.update_time,
+        createUser.id as create_user_id,
+        createUser.user_name as create_user_name,
+        updateUser.id as update_user_id,
+        updateUser.user_name as update_user_name
+        from
+          `thing`
+        left join `sys_user` createUser on `thing`.create_id = createUser.id
+        left join `sys_user` updateUser on `thing`.update_id = updateUser.id
+        where
+        1=1
+        <if test="title != null">
+            and title like '%' #{title} '%'
+        </if>
+        <if test="area != null">
+            and area like '%' #{area} '%'
+        </if>
+        <if test="sex != null">
+            and `sex` = #{sex}
+        </if>
+        <if test="birthDay != null">
+            and `birth_day` = #{birthDay}
         </if>
         <if test="type != null">
             and `type` = #{type}
@@ -38,7 +79,7 @@
         order by create_time desc
         limit #{pageStart}, #{pageSize}
     </select>
-    <select id="findById" resultMap="BaseMap" parameterType="java.lang.Long">
+    <select id="findById" resultMap="BaseMap">
         select
           `thing`.*,
           label.label_id,
@@ -65,6 +106,15 @@
         <if test="title != null">
             and title like '%' #{title} '%'
         </if>
+        <if test="area != null">
+            and area like '%' #{area} '%'
+        </if>
+        <if test="sex != null">
+            and `sex` = #{sex}
+        </if>
+        <if test="birthDay != null">
+            and `birth_day` = #{birthDay}
+        </if>
         <if test="type != null">
             and `type` = #{type}
         </if>
@@ -79,6 +129,9 @@
           images,
           views,
           likes,
+          area,
+          sex,
+          birth_day,
           create_time,
           create_id,
           create_ip
@@ -91,6 +144,9 @@
           #{images},
           #{views},
           #{likes},
+          #{area},
+          #{sex},
+          #{birthDay},
           #{createTime},
           #{createId},
           #{createIp}
@@ -108,11 +164,8 @@
             )
         </foreach>
     </insert>
-    <delete id="delThingLabelByThingIds" parameterType="java.util.List">
-      delete from `thing_label` where thing_id in
-      <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
-        #{item}
-      </foreach>
+    <delete id="delThingLabelByThingId" parameterType="java.lang.Long">
+      delete from `thing_label` where thing_id = #{id}
     </delete>
     <update id="update" parameterType="com.exposure.exposureservice.entity.Thing">
         update `thing`
@@ -135,6 +188,15 @@
             <if test="likes != null">
                 likes = #{likes},
             </if>
+            <if test="area != null">
+                area = #{area},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="birthDay != null">
+                birth_day = #{birthDay},
+            </if>
             update_time = #{updateTime},
             update_id = #{updateId},
             update_ip = #{updateIp}
@@ -144,4 +206,13 @@
     <delete id="del" parameterType="java.lang.Long">
         delete from `thing` where id = #{id}
     </delete>
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";">
+            update `thing`
+            <set>
+                create_type = #{item.createType}
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
 </mapper>
