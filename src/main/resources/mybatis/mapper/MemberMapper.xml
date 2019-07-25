@@ -110,13 +110,16 @@
                 real_name = #{realName},
             </if>
             <if test="avatar != null">
-                avatar = #{avatar}
+                avatar = #{avatar},
             </if>
             <if test="mobile != null">
-                mobile = #{mobile}
+                mobile = #{mobile},
             </if>
             <if test="isActive != null">
-                is_active = #{isActive}
+                is_active = #{isActive},
+            </if>
+            <if test="password != null">
+                password = #{password}
             </if>
         </set>
         where id = #{id}
