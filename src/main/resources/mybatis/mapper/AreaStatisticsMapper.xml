@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exposure.exposureservice.repository.AreaStatisticsRepository">
+    <resultMap id="BaseMap" type="com.exposure.exposureservice.entity.AreaStatistics">
+        <id column="area_name" jdbcType="VARCHAR" property="areaName"/>
+        <result column="total" jdbcType="INTEGER" property="total" />
+    </resultMap>
+    <select id="findAll" resultMap="BaseMap">
+        select * from `area_statistics`
+        order by `total` desc
+    </select>
+    <select id="findByName" resultMap="BaseMap">
+        select * from `area_statistics` where area_name = #{areaName}
+    </select>
+    <update id="update" parameterType="com.exposure.exposureservice.entity.AreaStatistics">
+        update `area_statistics`
+        <set>
+            <if test="total != null">
+                `total` = #{total}
+            </if>
+        </set>
+        where area_name = #{areaName}
+    </update>
+</mapper>

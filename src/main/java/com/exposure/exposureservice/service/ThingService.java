@@ -23,4 +23,6 @@ public interface ThingService {
     void insert(ThingDto thingDto);
     void update(ThingDto thingDto);
     void del(Long id);
+
+    Long total(String title, Date birthDay, Integer sex, Integer type, String area);
 }

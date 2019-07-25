@@ -7,11 +7,19 @@ import java.util.List;
 
 public interface MemberService {
     List<Member> findAll();
-    PageBean<List<Member>> findList(String userName, Integer pageIndex, Integer pageSize);
+    PageBean<List<Member>> findList(
+            String userName,
+            String email,
+            Integer isActive,
+            Integer pageIndex,
+            Integer pageSize
+    );
     Member findById(Long id);
     void insert(Member member);
     void update(Member member);
     void del(Long id);
+
+    Long total(String userName, String email, Integer isActive);
 
     void active(Long id, Integer isActive);
 

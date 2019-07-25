@@ -21,6 +21,7 @@ public class Member implements Serializable {
     private String realName;
     private String avatar;
     private Integer isActive;
+    private Integer isOnline;
     private Date createTime;
     private String lastLoginIp;
     private Date lastLoginTime;
@@ -96,6 +97,14 @@ public class Member implements Serializable {
 
     public void setIsActive(Integer isActive) {
         this.isActive = isActive;
+    }
+
+    public Integer getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(Integer isOnline) {
+        this.isOnline = isOnline;
     }
 
     public Date getCreateTime() {

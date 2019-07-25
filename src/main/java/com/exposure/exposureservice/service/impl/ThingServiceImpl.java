@@ -163,4 +163,9 @@ public class ThingServiceImpl implements ThingService {
             throw new CommonException(ErrorCode.ID_NOTNULL);
         thingRepostory.del(id);
     }
+
+    @Override
+    public Long total(String title, Date birthDay, Integer sex, Integer type, String area) {
+        return thingRepostory.total(title, birthDay, sex, type, area);
+    }
 }

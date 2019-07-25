@@ -12,11 +12,17 @@ public interface MemberRepository {
     List<Member> findAll();
     List<Member> findList(
             @Param("userName") String userName,
+            @Param("email") String email,
+            @Param("isActive") Integer isActive,
             @Param("pageStart") Integer pageStart,
             @Param("pageSize") Integer pageSize
     );
     Member findById(Long id);
-    Long total(@Param("userName") String userName);
+    Long total(
+            @Param("userName") String userName,
+            @Param("email") String email,
+            @Param("isActive") Integer isActive
+    );
     void insert(Member member);
     void update(Member member);
     void del(Long id);

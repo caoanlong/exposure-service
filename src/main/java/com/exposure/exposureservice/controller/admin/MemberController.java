@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @ApiOperation(value = "findAll", notes = "查询所有会员", response = Member.class, responseContainer = "List")
     @GetMapping("/findAll")
     public ResultBean<Object> findAll() {
@@ -32,10 +36,21 @@ public class MemberController {
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "userName", required = false) String userName,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "isActive", required = false) Integer isActive,
             @RequestParam(value = "pageIndex", required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize
     ) {
-        PageBean<List<Member>> list = memberService.findList(userName, pageIndex, pageSize);
+        PageBean<List<Member>> list = memberService.findList(userName, email, isActive, pageIndex, pageSize);
+        for (Member member: list.getList() ) {
+            String key = "isOnline:" + member.getId();
+            String s = stringRedisTemplate.opsForValue().get(key);
+            if (null != s) {
+                member.setIsOnline(1);
+            } else {
+                member.setIsOnline(0);
+            }
+        }
         return ResultUtils.success(list);
     }
 

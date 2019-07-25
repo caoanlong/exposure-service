@@ -28,10 +28,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public PageBean<List<Member>> findList(String userName, Integer pageIndex, Integer pageSize) {
+    public PageBean<List<Member>> findList(
+            String userName,
+            String email,
+            Integer isActive,
+            Integer pageIndex,
+            Integer pageSize
+    ) {
         Integer pageStart = (pageIndex - 1) * pageSize;
-        List<Member> members = memberRepository.findList(userName, pageStart, pageSize);
-        Long total = memberRepository.total(userName);
+        List<Member> members = memberRepository.findList(userName, email, isActive, pageStart, pageSize);
+        Long total = memberRepository.total(userName, email, isActive);
         PageBean<List<Member>> pageBean = new PageBean<>();
         pageBean.setList(members);
         pageBean.setPageIndex(pageIndex);
@@ -64,6 +70,11 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void del(Long id) {
         memberRepository.del(id);
+    }
+
+    @Override
+    public Long total(String userName, String email, Integer isActive) {
+        return memberRepository.total(userName, email, isActive);
     }
 
     @Override
