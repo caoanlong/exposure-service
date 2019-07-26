@@ -26,10 +26,11 @@ public class AreaStatisticsSchedule {
      */
     @Scheduled(initialDelay = 5000, fixedDelay=600000)
     public void update() {
+        System.out.println("start!!!!");
         List<AreaStatistics> all = areaStatisticsService.findAll();
         for (AreaStatistics areaStatistics: all) {
-            String areaName = areaStatistics.getAreaName();
-            Long total = thingService.total(null, null, null, null, areaName);
+            String code = areaStatistics.getCode();
+            Long total = thingService.total(null, null, null, null, code);
             areaStatistics.setTotal(total);
             areaStatisticsService.update(areaStatistics);
         }

@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface AreaStatisticsRepository {
     List<AreaStatistics> findAll();
-    AreaStatistics findByName(@Param("areaName") String areaName);
+    AreaStatistics findByCode(@Param("code") String code);
     void update(AreaStatistics areaStatistics);
 }

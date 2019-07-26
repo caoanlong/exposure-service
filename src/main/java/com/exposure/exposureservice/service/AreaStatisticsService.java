@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface AreaStatisticsService {
     List<AreaStatistics> findAll();
-    AreaStatistics findByName(String areaName);
+    AreaStatistics findByCode(String code);
     void update(AreaStatistics areaStatistics);
 }

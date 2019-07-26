@@ -8,8 +8,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AreaStatistics {
+    private String code;
     private String areaName;
     private Long total = 0l;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getAreaName() {
         return areaName;

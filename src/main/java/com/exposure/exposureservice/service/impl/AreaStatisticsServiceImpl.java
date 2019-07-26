@@ -21,8 +21,8 @@ public class AreaStatisticsServiceImpl implements AreaStatisticsService {
     }
 
     @Override
-    public AreaStatistics findByName(String areaName) {
-        return areaStatisticsRepository.findByName(areaName);
+    public AreaStatistics findByCode(String code) {
+        return areaStatisticsRepository.findByCode(code);
     }
 
     @Override
