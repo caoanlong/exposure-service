@@ -31,6 +31,7 @@ public class AreaStatisticsSchedule {
         for (AreaStatistics areaStatistics: all) {
             String code = areaStatistics.getCode();
             Long total = thingService.total(null, null, null, null, code);
+            System.out.println(code + ":" + total);
             areaStatistics.setTotal(total);
             areaStatisticsService.update(areaStatistics);
         }

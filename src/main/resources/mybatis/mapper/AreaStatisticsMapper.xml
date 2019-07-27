@@ -3,7 +3,7 @@
 <mapper namespace="com.exposure.exposureservice.repository.AreaStatisticsRepository">
     <resultMap id="BaseMap" type="com.exposure.exposureservice.entity.AreaStatistics">
         <id column="code" jdbcType="VARCHAR" property="code"/>
-        <result column="area_name" jdbcType="VARCHAR" property="area_name" />
+        <result column="area_name" jdbcType="VARCHAR" property="areaName" />
         <result column="total" jdbcType="INTEGER" property="total" />
     </resultMap>
     <select id="findAll" resultMap="BaseMap">
