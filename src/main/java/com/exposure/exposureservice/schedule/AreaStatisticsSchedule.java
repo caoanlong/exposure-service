@@ -24,14 +24,13 @@ public class AreaStatisticsSchedule {
      * 初次间隔5秒
      * 10分钟执行一次
      */
-    @Scheduled(initialDelay = 5000, fixedDelay=600000)
+    @Scheduled(initialDelay = 5000, fixedDelay=1800000)
     public void update() {
         System.out.println("start!!!!");
         List<AreaStatistics> all = areaStatisticsService.findAll();
         for (AreaStatistics areaStatistics: all) {
             String code = areaStatistics.getCode();
             Long total = thingService.total(null, null, null, null, code);
-            System.out.println(code + ":" + total);
             areaStatistics.setTotal(total);
             areaStatisticsService.update(areaStatistics);
         }

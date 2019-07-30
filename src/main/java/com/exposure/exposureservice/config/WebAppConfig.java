@@ -32,7 +32,8 @@ public class WebAppConfig implements WebMvcConfigurer {
                         "/app/member/active",
                         "/app/member/getEmailCode",
                         "/app/member/resetPassword",
-                        "/app/thing/findList"
+                        "/app/thing/findList",
+                        "/app/common/statistics"
                 );
     }
 }

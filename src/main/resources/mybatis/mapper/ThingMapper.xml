@@ -42,7 +42,7 @@
         `thing`.id,
         `thing`.title,
         `thing`.type,
-        `thing`.info,
+        left(`thing`.info, 22) as info,
         `thing`.avatar,
         `thing`.views,
         `thing`.likes,
