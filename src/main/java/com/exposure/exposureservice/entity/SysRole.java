@@ -7,15 +7,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SysRole extends Base {
-    private Long id;
+    private Integer id;
     private String roleName;
-    private String permissions;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -25,13 +24,5 @@ public class SysRole extends Base {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
-    }
-
-    public String getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(String permissions) {
-        this.permissions = permissions;
     }
 }
