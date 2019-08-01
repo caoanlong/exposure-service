@@ -126,4 +126,7 @@
     <select id="findByNameAndPassword" resultMap="BaseMap">
         select * from `sys_user` where user_name = #{userName} and password = #{password}
     </select>
+    <select id="findByName" parameterType="String" resultType="SysUser">
+        select * from `sys_user` where user_name = #{userName}
+    </select>
 </mapper>

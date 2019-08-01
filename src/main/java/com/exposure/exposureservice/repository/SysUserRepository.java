@@ -24,4 +24,6 @@ public interface SysUserRepository {
             @Param("userName") String userName,
             @Param("password") String password
     );
+
+    SysUser findByName(@Param("userName") String userName);
 }

@@ -14,9 +14,9 @@ public interface SysRoleRepository {
             @Param("pageStart") Integer pageStart,
             @Param("pageSize") Integer pageSize
     );
-    SysRole findById(Long id);
+    SysRole findById(Integer id);
     Long total(String roleName);
     void insert(SysRole sysRole);
     void update(SysRole sysRole);
-    void del(Long id);
+    void del(Integer id);
 }

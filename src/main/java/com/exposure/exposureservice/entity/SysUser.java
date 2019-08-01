@@ -12,6 +12,7 @@ public class SysUser extends Base {
     private Long id;
     private String userName;
     private String password;
+    private String salt;
     private String avatar;
     private String mobile;
     private String email;
@@ -42,6 +43,14 @@ public class SysUser extends Base {
     public void setPassword(String password) {
         String pwd = MD5Utils.md5(password, Constant.MD5_SALT_SYSUSER);
         this.password = pwd;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getAvatar() {

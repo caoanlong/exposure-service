@@ -19,11 +19,11 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册自定义拦截器，添加拦截路径和排除拦截路径
-        registry.addInterceptor(new AdminInterceptor())
-                .addPathPatterns("/admin/**")
-                .excludePathPatterns(
-                        "/admin/sysUser/login"
-                );
+//        registry.addInterceptor(new AdminInterceptor())
+//                .addPathPatterns("/admin/**")
+//                .excludePathPatterns(
+//                        "/admin/sysUser/login"
+//                );
         registry.addInterceptor(appInterceptor())
                 .addPathPatterns("/app/**")
                 .excludePathPatterns(

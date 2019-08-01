@@ -8,8 +8,8 @@ import java.util.List;
 public interface SysRoleService {
     List<SysRole> findAll();
     PageBean<List<SysRole>> findList(String roleName, Integer pageIndex, Integer pageSize);
-    SysRole findById(Long id);
+    SysRole findById(Integer id);
     void insert(SysRole sysRole);
     void update(SysRole sysRole);
-    void del(Long id);
+    void del(Integer id);
 }

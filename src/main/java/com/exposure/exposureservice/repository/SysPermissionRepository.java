@@ -1,5 +1,6 @@
 package com.exposure.exposureservice.repository;
 
+import com.exposure.exposureservice.entity.SysPermission;
 import com.exposure.exposureservice.entity.SysRole;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -8,15 +9,18 @@ import java.util.List;
 
 @Repository
 public interface SysPermissionRepository {
-    List<SysRole> findAll();
-    List<SysRole> findList(
-            @Param("roleName") String roleName,
+    List<SysPermission> findAll();
+    List<SysPermission> findList(
+            @Param("perName") String perName,
+            @Param("perType") String perType,
             @Param("pageStart") Integer pageStart,
             @Param("pageSize") Integer pageSize
     );
-    SysRole findById(Long id);
-    Long total(String roleName);
-    void insert(SysRole sysRole);
-    void update(SysRole sysRole);
-    void del(Long id);
+    SysPermission findById(Integer id);
+    Long total(String perName, String perType);
+    void insert(SysPermission sysPermission);
+    void update(SysPermission sysPermission);
+    void del(Integer id);
+
+    List<String> findPermissionByUserId(@Param("userId") Long userId);
 }

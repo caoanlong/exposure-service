@@ -66,4 +66,9 @@ public class SysUserServiceImpl implements SysUserService {
     public SysUser findByNameAndPassword(String userName, String password) {
         return sysUserRepository.findByNameAndPassword(userName, password);
     }
+
+    @Override
+    public SysUser findByName(String userName) {
+        return sysUserRepository.findByName(userName);
+    }
 }

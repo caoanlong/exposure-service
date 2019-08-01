@@ -4,7 +4,6 @@ import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.SysRole;
 import com.exposure.exposureservice.repository.SysRoleRepository;
 import com.exposure.exposureservice.service.SysRoleService;
-import com.exposure.exposureservice.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +12,6 @@ import java.util.List;
 
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
-    @Autowired
-    private SnowFlake snowFlake;
 
     @Autowired
     private SysRoleRepository sysRoleRepository;
@@ -38,14 +35,12 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public SysRole findById(Long id) {
+    public SysRole findById(Integer id) {
         return sysRoleRepository.findById(id);
     }
 
     @Override
     public void insert(SysRole sysRole) {
-        Long id = snowFlake.nextId();
-        sysRole.setId(id);
         sysRole.setCreateTime(new Date());
         sysRoleRepository.insert(sysRole);
     }
@@ -57,7 +52,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public void del(Long id) {
+    public void del(Integer id) {
         sysRoleRepository.del(id);
     }
 }

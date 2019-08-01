@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.exposure.exposureservice.repository.SysRoleRepository">
+<mapper namespace="com.exposure.exposureservice.repository.SysPermissionRepository">
     <resultMap id="BaseMap" type="com.exposure.exposureservice.entity.SysPermission">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="pid" jdbcType="INTEGER" property="pid"/>
@@ -9,8 +9,14 @@
         <result column="permission" jdbcType="VARCHAR" property="permission"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
     </resultMap>
+    <select id="findPermissionByUserId" parameterType="Long" resultMap="String">
+        select distinct sp.permission from sys_permission sp
+        inner join sys_role_permission srp on sp.id=srp.permission_id
+        inner join sys_user_role sur on sur.role_id=srp.role_id
+        where sur.user_id=#{userId}
+    </select>
     <select id="findAll" resultMap="BaseMap">
-        select id, role_name from `sys_permission`
+        select * from `sys_permission`
     </select>
     <select id="findList" resultMap="BaseMap">
         select * from `sys_permission`
