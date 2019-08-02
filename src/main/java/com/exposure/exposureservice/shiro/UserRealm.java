@@ -4,15 +4,20 @@ import com.exposure.exposureservice.entity.SysUser;
 import com.exposure.exposureservice.service.SysPermissionService;
 import com.exposure.exposureservice.service.SysUserService;
 import com.exposure.exposureservice.utils.JWTUtil;
+import com.exposure.exposureservice.utils.JwtUtils;
+import io.jsonwebtoken.Claims;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
+@Component
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
@@ -20,6 +25,9 @@ public class UserRealm extends AuthorizingRealm {
 
     @Autowired
     private SysPermissionService sysPermissionService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Override
     public boolean supports(AuthenticationToken authenticationToken) {
@@ -35,7 +43,9 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         // 从principals中拿到Token令牌
-        Long userId = Long.valueOf(JWTUtil.decode(principals.toString()));
+        Claims claims = jwtUtils.parseJWT(principals.toString());
+        String id = claims.getSubject();  // 解密Token
+        Long userId = Long.valueOf(id);
         SysUser sysUser = sysUserService.findById(userId);
         if (null == sysUser) return null;
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -56,12 +66,13 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
-        String id = JWTUtil.decode(token);  // 解密Token
+        Claims claims = jwtUtils.parseJWT(token);
+        String id = claims.getSubject();  // 解密Token
         if (null == id) {
             // Token解密失败，抛出异常
             throw new AuthenticationException("Invalid token.");
         }
         // Token解密成功，返回SimpleAuthenticationInfo对象
-        return new SimpleAuthenticationInfo(token, token, getName());
+        return new SimpleAuthenticationInfo(id, token, getName());
     }
 }

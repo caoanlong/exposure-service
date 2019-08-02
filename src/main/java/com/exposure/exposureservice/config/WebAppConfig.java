@@ -24,16 +24,16 @@ public class WebAppConfig implements WebMvcConfigurer {
 //                .excludePathPatterns(
 //                        "/admin/sysUser/login"
 //                );
-        registry.addInterceptor(appInterceptor())
-                .addPathPatterns("/app/**")
-                .excludePathPatterns(
-                        "/app/member/login",
-                        "/app/member/register",
-                        "/app/member/active",
-                        "/app/member/getEmailCode",
-                        "/app/member/resetPassword",
-                        "/app/thing/findList",
-                        "/app/common/statistics"
-                );
+//        registry.addInterceptor(appInterceptor())
+//                .addPathPatterns("/app/**")
+//                .excludePathPatterns(
+//                        "/app/member/login",
+//                        "/app/member/register",
+//                        "/app/member/active",
+//                        "/app/member/getEmailCode",
+//                        "/app/member/resetPassword",
+//                        "/app/thing/findList",
+//                        "/app/common/statistics"
+//                );
     }
 }

@@ -6,6 +6,7 @@ public class Constant {
     public static final String JWT_ID = UUID.randomUUID().toString();
     public static final String JWT_SECRET = "cao123789";
     public static final long JWT_TTL = 86400000 * 30;
+    public static final Integer JWT_TTL2 = 86400000 * 30;
 
     // MD5盐
     public static final String MD5_SALT = "caonimadebi";

@@ -20,4 +20,5 @@ public interface SysPermissionService {
     void del(Integer id);
 
     List<String> findPermissionByUserId(Long userId);
+    List<SysPermission> findPermissionByPid(Integer pid);
 }

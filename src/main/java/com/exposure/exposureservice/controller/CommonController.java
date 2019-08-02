@@ -21,7 +21,7 @@ import java.util.*;
 
 @Api(value = "CommonController", description = "通用")
 @RestController
-@RequestMapping(value = {"/admin/common", "/app/common"})
+@RequestMapping(value = {"/common", "/admin/common", "/app/common"})
 public class CommonController {
     @Value("${file.path}")
     private String filePath;
@@ -37,6 +37,16 @@ public class CommonController {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @RequestMapping("/tokenNull")
+    public ResultBean<Object> tokenNull() {
+        return ResultUtils.error(ErrorCode.TOKEN_NOTNULL);
+    }
+
+    @RequestMapping("/tokenError")
+    public ResultBean<Object> tokenError() {
+        return ResultUtils.error(ErrorCode.TOKEN_ERROR);
+    }
 
     @ApiOperation(value = "upload", notes = "上传图片")
     @PostMapping("/upload")

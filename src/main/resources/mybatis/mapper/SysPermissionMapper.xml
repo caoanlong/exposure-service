@@ -8,13 +8,13 @@
         <result column="per_type" jdbcType="VARCHAR" property="perType"/>
         <result column="permission" jdbcType="VARCHAR" property="permission"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+        <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
-    <select id="findPermissionByUserId" parameterType="Long" resultMap="String">
-        select distinct sp.permission from sys_permission sp
-        inner join sys_role_permission srp on sp.id=srp.permission_id
-        inner join sys_user_role sur on sur.role_id=srp.role_id
-        where sur.user_id=#{userId}
-    </select>
     <select id="findAll" resultMap="BaseMap">
         select * from `sys_permission`
     </select>
@@ -39,13 +39,17 @@
           per_name,
           per_type,
           permission,
-          url
+          url,
+          create_user_id,
+          create_time
         ) values (
           #{pid},
           #{perName},
           #{perType},
           #{permission},
-          #{url}
+          #{url},
+          #{createUserId},
+          #{createTime}
         )
     </insert>
     <update id="update" parameterType="com.exposure.exposureservice.entity.SysPermission">
@@ -57,19 +61,42 @@
             <if test="perName != null">
                 per_name = #{perName},
             </if>
-            <if test="per_type != null">
+            <if test="perType != null">
                 per_type = #{perType},
             </if>
             <if test="permission != null">
                 permission = #{permission},
             </if>
             <if test="url != null">
-                url = #{url}
+                url = #{url},
             </if>
+            update_user_id = #{updateUserId},
+            update_time = #{updateTime}
         </set>
         where id = #{id}
     </update>
-    <delete id="del" parameterType="java.lang.Long">
-        delete from `sys_roles` where id = #{id}
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from `sys_permission` where id = #{id}
     </delete>
+    <select id="findPermissionByUserId" parameterType="java.lang.Long">
+        select distinct sp.permission from sys_permission sp
+        inner join sys_role_permission srp on sp.id=srp.permission_id
+        inner join sys_user_role sur on sur.role_id=srp.role_id
+        where sur.user_id=#{userId}
+    </select>
+    <select id="findPermissionByPid" parameterType="java.lang.Integer" resultMap="BaseMap">
+        select
+        `sys_permission`.*,
+        createUser.id as create_user_id,
+        createUser.user_name as create_user_name,
+        updateUser.id as update_user_id,
+        updateUser.user_name as update_user_name
+        from
+            `sys_permission`
+            left join `sys_user` createUser on `sys_permission`.create_user_id = createUser.id
+            left join `sys_user` updateUser on `sys_permission`.update_user_id = updateUser.id
+            <if test="pid != null">
+                where `sys_permission`.pid=#{pid}
+            </if>
+    </select>
 </mapper>

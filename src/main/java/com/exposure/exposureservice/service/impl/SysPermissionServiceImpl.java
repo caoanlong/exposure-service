@@ -7,6 +7,7 @@ import com.exposure.exposureservice.service.SysPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -46,21 +47,29 @@ public class SysPermissionServiceImpl implements SysPermissionService {
 
     @Override
     public void insert(SysPermission sysPermission) {
-
+        if (null == sysPermission.getPid()) sysPermission.setPid(-1);
+        sysPermission.setCreateTime(new Date());
+        sysPermissionRepository.insert(sysPermission);
     }
 
     @Override
     public void update(SysPermission sysPermission) {
-
+        sysPermission.setUpdateTime(new Date());
+        sysPermissionRepository.update(sysPermission);
     }
 
     @Override
     public void del(Integer id) {
-
+        sysPermissionRepository.del(id);
     }
 
     @Override
     public List<String> findPermissionByUserId(Long userId) {
-        return null;
+        return sysPermissionRepository.findPermissionByUserId(userId);
+    }
+
+    @Override
+    public List<SysPermission> findPermissionByPid(Integer pid) {
+        return sysPermissionRepository.findPermissionByPid(pid);
     }
 }

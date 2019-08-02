@@ -2,6 +2,9 @@ package com.exposure.exposureservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 系统角色
  */
@@ -9,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class SysRole extends Base {
     private Integer id;
     private String roleName;
+    private List<Integer> permission = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -24,5 +28,13 @@ public class SysRole extends Base {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public List<Integer> getPermission() {
+        return permission;
+    }
+
+    public void setPermission(List<Integer> permission) {
+        this.permission = permission;
     }
 }

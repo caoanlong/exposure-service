@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -48,14 +49,18 @@ public class SysRoleController {
 
     @ApiOperation(value = "add", notes = "添加系统角色")
     @PostMapping("/add")
-    public ResultBean<Object> add(@RequestBody SysRole sysRole) {
+    public ResultBean<Object> add(HttpServletRequest request, @RequestBody SysRole sysRole) {
+        Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
+        sysRole.setCreateUserId(id);
         sysRoleService.insert(sysRole);
         return ResultUtils.success();
     }
 
     @ApiOperation(value = "update", notes = "修改系统角色")
     @PostMapping("/update")
-    public ResultBean<Object> update(@RequestBody SysRole sysRole) {
+    public ResultBean<Object> update(HttpServletRequest request, @RequestBody SysRole sysRole) {
+        Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
+        sysRole.setUpdateUserId(id);
         sysRoleService.update(sysRole);
         return ResultUtils.success();
     }

@@ -2,6 +2,7 @@ package com.exposure.exposureservice.repository;
 
 import com.exposure.exposureservice.entity.SysPermission;
 import com.exposure.exposureservice.entity.SysRole;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +24,5 @@ public interface SysPermissionRepository {
     void del(Integer id);
 
     List<String> findPermissionByUserId(@Param("userId") Long userId);
+    List<SysPermission> findPermissionByPid(@Param("pid") Integer pid);
 }
