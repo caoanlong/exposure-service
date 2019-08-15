@@ -8,12 +8,42 @@
         <result column="per_type" jdbcType="VARCHAR" property="perType"/>
         <result column="permission" jdbcType="VARCHAR" property="permission"/>
         <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
         <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
         <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <collection
+                property="children"
+                javaType="ArrayList"
+                column="id"
+                ofType="com.exposure.exposureservice.entity.SysPermission"
+                select="childrenSelect">
+        </collection>
+    </resultMap>
+    <resultMap id="childrenMap" type="com.exposure.exposureservice.entity.SysPermission">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="per_name" jdbcType="VARCHAR" property="perName"/>
+        <result column="per_type" jdbcType="VARCHAR" property="perType"/>
+        <result column="permission" jdbcType="VARCHAR" property="permission"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
+        <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
+        <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
+        <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <collection
+                property="children"
+                javaType="ArrayList"
+                column="id"
+                ofType="com.exposure.exposureservice.entity.SysPermission"
+                select="childrenSelect">
+        </collection>
     </resultMap>
     <select id="findAll" resultMap="BaseMap">
         select * from `sys_permission`
@@ -40,6 +70,7 @@
           per_type,
           permission,
           url,
+          sort,
           create_user_id,
           create_time
         ) values (
@@ -48,6 +79,7 @@
           #{perType},
           #{permission},
           #{url},
+          #{sort},
           #{createUserId},
           #{createTime}
         )
@@ -70,6 +102,9 @@
             <if test="url != null">
                 url = #{url},
             </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
             update_user_id = #{updateUserId},
             update_time = #{updateTime}
         </set>
@@ -78,7 +113,7 @@
     <delete id="del" parameterType="java.lang.Integer">
         delete from `sys_permission` where id = #{id}
     </delete>
-    <select id="findPermissionByUserId" parameterType="java.lang.Long">
+    <select id="findPermissionByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
         select distinct sp.permission from sys_permission sp
         inner join sys_role_permission srp on sp.id=srp.permission_id
         inner join sys_user_role sur on sur.role_id=srp.role_id
@@ -95,8 +130,21 @@
             `sys_permission`
             left join `sys_user` createUser on `sys_permission`.create_user_id = createUser.id
             left join `sys_user` updateUser on `sys_permission`.update_user_id = updateUser.id
-            <if test="pid != null">
-                where `sys_permission`.pid=#{pid}
-            </if>
+        where `sys_permission`.pid=#{pid}
+        order by sort asc
+    </select>
+    <select id="childrenSelect" resultMap="childrenMap">
+        select
+        `sys_permission`.*,
+        createUser.id as create_user_id,
+        createUser.user_name as create_user_name,
+        updateUser.id as update_user_id,
+        updateUser.user_name as update_user_name
+        from
+          `sys_permission`
+          left join `sys_user` createUser on `sys_permission`.create_user_id = createUser.id
+          left join `sys_user` updateUser on `sys_permission`.update_user_id = updateUser.id
+        where pid = #{id}
+        order by sort asc
     </select>
 </mapper>

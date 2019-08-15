@@ -13,6 +13,8 @@ public interface SysUserService {
     void update(SysUser sysUser);
     void del(Long id);
 
+    SysUser findBaseInfoById(Long id);
+
     SysUser findByNameAndPassword(String userName, String password);
 
     SysUser findByName(String userName);

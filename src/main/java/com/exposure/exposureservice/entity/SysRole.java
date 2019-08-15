@@ -13,6 +13,7 @@ public class SysRole extends Base {
     private Integer id;
     private String roleName;
     private List<Integer> permission = new ArrayList<>();
+    private List<SysPermission> sysPermissions = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -36,5 +37,13 @@ public class SysRole extends Base {
 
     public void setPermission(List<Integer> permission) {
         this.permission = permission;
+    }
+
+    public List<SysPermission> getSysPermissions() {
+        return sysPermissions;
+    }
+
+    public void setSysPermissions(List<SysPermission> sysPermissions) {
+        this.sysPermissions = sysPermissions;
     }
 }

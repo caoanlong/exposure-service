@@ -12,4 +12,6 @@ public interface SysRoleService {
     void insert(SysRole sysRole);
     void update(SysRole sysRole);
     void del(Integer id);
+
+    List<String> findRolesByUserId(Long userId);
 }

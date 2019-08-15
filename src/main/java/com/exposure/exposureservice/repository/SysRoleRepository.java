@@ -1,6 +1,7 @@
 package com.exposure.exposureservice.repository;
 
 import com.exposure.exposureservice.entity.SysRole;
+import com.exposure.exposureservice.entity.SysRolePermission;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,8 @@ public interface SysRoleRepository {
     void insert(SysRole sysRole);
     void update(SysRole sysRole);
     void del(Integer id);
+    void insertSysRolePermissions(List<SysRolePermission> sysRolePermissions);
+    void delSysRolePermissionByRoleId(Integer roleId);
+    List<String> findRolesByUserId(Long userId);
+    List<SysRolePermission> findPermissionByRoleId(Integer roleId);
 }

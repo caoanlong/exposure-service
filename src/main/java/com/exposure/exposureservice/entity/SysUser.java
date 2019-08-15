@@ -4,6 +4,8 @@ import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.utils.MD5Utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 /**
  * 系统用户
  */
@@ -16,9 +18,8 @@ public class SysUser extends Base {
     private String avatar;
     private String mobile;
     private String email;
-    private Integer roleId;
-    private String roleName;
-    private String permissions;
+    private List<Integer> roleIds;
+    private List<SysRole> roles;
 
     public Long getId() {
         return id;
@@ -77,27 +78,20 @@ public class SysUser extends Base {
         this.email = email;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public List<Integer> getRoleIds() {
+        return roleIds;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRoleIds(List<Integer> roleIds) {
+        this.roleIds = roleIds;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public List<SysRole> getRoles() {
+        return roles;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRoles(List<SysRole> roles) {
+        this.roles = roles;
     }
 
-    public String getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(String permissions) {
-        this.permissions = permissions;
-    }
 }

@@ -8,23 +8,24 @@
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
         <result column="mobile" jdbcType="VARCHAR" property="mobile" />
         <result column="email" jdbcType="VARCHAR" property="email" />
-        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
-        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
-        <result column="permissions" jdbcType="VARCHAR" property="permissions"/>
         <result column="create_user_id" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_user_id" jdbcType="INTEGER" property="updateUserId"/>
         <result column="create_user_name" jdbcType="VARCHAR" property="createUserName"/>
         <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <collection property="roles" ofType="com.exposure.exposureservice.entity.SysRole">
+            <id column="role_id" jdbcType="INTEGER" property="id"/>
+            <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        </collection>
     </resultMap>
+
     <select id="findAll" resultMap="BaseMap">
         select
           id,
           user_name,
           mobile,
           email,
-          role_id,
           create_user_id,
           update_user_id,
           create_time,
@@ -33,35 +34,41 @@
     </select>
     <select id="findList" resultMap="BaseMap">
         select
-          id,
-          user_name,
-          mobile,
-          email,
-          role_id,
-          create_user_id,
-          update_user_id,
-          create_time,
-          update_time
-        from `sys_user`
+          su.id,
+          su.user_name,
+          su.mobile,
+          su.email,
+          createUser.id as create_user_id,
+          createUser.user_name as create_user_name,
+          updateUser.id as update_user_id,
+          updateUser.user_name as update_user_name
+        from `sys_user` su
+        left join `sys_user` createUser on su.create_user_id = createUser.id
+        left join `sys_user` updateUser on su.update_user_id = updateUser.id
         <if test="userName != null">
-            where user_name like '%' #{userName} '%'
+            where su.user_name like '%' #{userName} '%'
         </if>
-        order by create_time desc
+        order by su.create_time desc
         limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" resultMap="BaseMap">
         select
-          id,
-          user_name,
-          avatar,
-          mobile,
-          email,
-          role_id,
-          create_user_id,
-          update_user_id,
-          create_time,
-          update_time
-        from `sys_user` where id = #{id}
+          su.id,
+          su.user_name,
+          su.avatar,
+          su.mobile,
+          su.email,
+          su.create_time,
+          su.update_time,
+          sr.id as role_id,
+          sr.role_name
+        from `sys_user` su
+        left join `sys_user_role` sur on sur.user_id = su.id
+        left join `sys_role` sr on sur.role_id = sr.id
+        where su.id = #{id}
+    </select>
+    <select id="findBaseInfoById" resultMap="BaseMap">
+        select * from `sys_user` where id = #{id}
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(1) from `sys_user`
@@ -77,7 +84,6 @@
           avatar,
           mobile,
           email,
-          role_id,
           create_user_id,
           create_time
         ) values (
@@ -87,11 +93,21 @@
           #{avatar},
           #{mobile},
           #{email},
-          #{roleId},
           #{createUserId},
           #{createTime}
         )
     </insert>
+    <insert id="insertSysUserRole" parameterType="ArrayList">
+        insert into `sys_user_role` (
+        user_id, role_id
+        ) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId}, #{item.roleId})
+        </foreach>
+    </insert>
+    <delete id="delSysUserRole" parameterType="java.lang.Long">
+        delete from `sys_user_role` where user_id = #{id}
+    </delete>
     <update id="update" parameterType="com.exposure.exposureservice.entity.SysUser">
         update `sys_user`
         <set>
@@ -110,9 +126,6 @@
             <if test="email != null">
                 email = #{email},
             </if>
-            <if test="roleId != null">
-                role_id = #{roleId},
-            </if>
             <if test="updateUserId != null">
                 update_user_id = #{updateUserId},
             </if>
@@ -122,6 +135,9 @@
     </update>
     <delete id="del" parameterType="java.lang.Long">
         delete from `sys_user` where id = #{id}
+    </delete>
+    <delete id="delSysUserRoleByUserId" parameterType="java.lang.Long">
+        delete from `sys_user_role` where user_id = #{userId}
     </delete>
     <select id="findByNameAndPassword" resultMap="BaseMap">
         select * from `sys_user` where user_name = #{userName} and password = #{password}

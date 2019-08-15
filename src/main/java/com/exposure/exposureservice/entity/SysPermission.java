@@ -2,6 +2,8 @@ package com.exposure.exposureservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 /**
  * 系统权限
  */
@@ -13,6 +15,8 @@ public class SysPermission extends Base {
     private String perType;
     private String permission;
     private String url;
+    private Integer sort;
+    private List<SysPermission> children;
 
     public Integer getId() {
         return id;
@@ -60,5 +64,21 @@ public class SysPermission extends Base {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public List<SysPermission> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysPermission> children) {
+        this.children = children;
     }
 }

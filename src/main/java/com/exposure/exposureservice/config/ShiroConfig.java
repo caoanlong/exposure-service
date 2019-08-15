@@ -5,6 +5,8 @@ import com.exposure.exposureservice.shiro.ShiroFilter;
 import com.exposure.exposureservice.shiro.UserRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +17,17 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
+
+    public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        return redisManager;
+    }
+
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
+    }
 
     /**
      * 安全管理器
@@ -27,6 +40,7 @@ public class ShiroConfig {
     public DefaultWebSecurityManager securityManager(UserRealm userRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(userRealm);
+        securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
 
@@ -51,6 +65,7 @@ public class ShiroConfig {
         filterRuleMap.put("/admin/sysUser/login", "anon");
         filterRuleMap.put("/common/tokenNull", "anon");
         filterRuleMap.put("/common/tokenError", "anon");
+//        filterRuleMap.put("/common/upload", "anon");
         filterRuleMap.put("/app/**", "anon");
         // 所有的请求通过ShiroFilter执行处理
         filterRuleMap.put("/admin/**", "jwt");

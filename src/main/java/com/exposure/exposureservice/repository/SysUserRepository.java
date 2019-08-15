@@ -1,6 +1,7 @@
 package com.exposure.exposureservice.repository;
 
 import com.exposure.exposureservice.entity.SysUser;
+import com.exposure.exposureservice.entity.SysUserRole;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,10 +21,15 @@ public interface SysUserRepository {
     void update(SysUser sysUser);
     void del(Long id);
 
+    SysUser findBaseInfoById(Long id);
+
     SysUser findByNameAndPassword(
             @Param("userName") String userName,
             @Param("password") String password
     );
 
     SysUser findByName(@Param("userName") String userName);
+
+    void insertSysUserRole(List<SysUserRole> sysUserRoles);
+    void delSysUserRoleByUserId(Long userId);
 }

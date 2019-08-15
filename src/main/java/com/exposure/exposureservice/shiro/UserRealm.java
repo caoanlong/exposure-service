@@ -1,9 +1,11 @@
 package com.exposure.exposureservice.shiro;
 
+import com.exposure.exposureservice.entity.SysRole;
 import com.exposure.exposureservice.entity.SysUser;
 import com.exposure.exposureservice.service.SysPermissionService;
+import com.exposure.exposureservice.service.SysRoleService;
 import com.exposure.exposureservice.service.SysUserService;
-import com.exposure.exposureservice.utils.JWTUtil;
+import com.exposure.exposureservice.service.impl.SysUserServiceImpl;
 import com.exposure.exposureservice.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.apache.shiro.authc.*;
@@ -24,6 +26,9 @@ public class UserRealm extends AuthorizingRealm {
     private SysUserService sysUserService;
 
     @Autowired
+    private SysRoleService sysRoleService;
+
+    @Autowired
     private SysPermissionService sysPermissionService;
 
     @Autowired
@@ -42,16 +47,18 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        // 从principals中拿到Token令牌
-        Claims claims = jwtUtils.parseJWT(principals.toString());
-        String id = claims.getSubject();  // 解密Token
-        Long userId = Long.valueOf(id);
-        SysUser sysUser = sysUserService.findById(userId);
+        Long userId = Long.valueOf(principals.toString());
+        System.out.println(userId);
+        SysUser sysUser = sysUserService.findBaseInfoById(userId);
         if (null == sysUser) return null;
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        List<String> roles = sysRoleService.findRolesByUserId(userId);
+        System.out.println(roles);
+        info.addRoles(roles);
         // 获取当前用户的所有权限，并且通过addStringPermissions添加到simpleAuthorizationInfo当中
         // 这样当Shiro内部检查用户是否有某项权限时就会从SimpleAuthorizationInfo中拿取校验
-        List<String> permissions = sysPermissionService.findPermissionByUserId(sysUser.getId());
+        List<String> permissions = sysPermissionService.findPermissionByUserId(userId);
+        System.out.println(permissions);
         info.addStringPermissions(permissions);
         return info;
     }

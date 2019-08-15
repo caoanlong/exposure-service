@@ -10,6 +10,21 @@
         <result column="update_user_name" jdbcType="VARCHAR" property="updateUserName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <collection
+                property="sysPermissions"
+                ofType="com.exposure.exposureservice.entity.SysPermission">
+            <id column="permission_id" jdbcType="INTEGER" property="id"/>
+            <result column="pid" jdbcType="INTEGER" property="pid"/>
+            <result column="per_name" jdbcType="VARCHAR" property="perName"/>
+            <result column="per_type" jdbcType="VARCHAR" property="perType"/>
+            <result column="permission" jdbcType="VARCHAR" property="permission"/>
+            <result column="url" jdbcType="VARCHAR" property="url"/>
+            <result column="sort" jdbcType="INTEGER" property="sort"/>
+        </collection>
+    </resultMap>
+    <resultMap id="RoleMap" type="com.exposure.exposureservice.entity.SysRole">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
     </resultMap>
     <select id="findAll" resultMap="BaseMap">
         select id, role_name from `sys_role`
@@ -35,7 +50,19 @@
         limit #{pageStart}, #{pageSize}
     </select>
     <select id="findById" resultMap="BaseMap">
-        select * from `sys_role` where id = #{id}
+        select
+          sr.*,
+          sp.id as permission_id,
+          sp.per_name,
+          sp.per_type,
+          sp.permission,
+          sp.pid,
+          sp.url,
+          sp.sort
+        from `sys_role` sr
+        left join `sys_role_permission` srp on sr.id = srp.role_id
+        left join `sys_permission` sp on sp.id = srp.permission_id
+        where sr.id = #{id}
     </select>
     <select id="total" resultType="java.lang.Long">
         select count(1) from `sys_role`
@@ -43,7 +70,7 @@
             where role_name like '%' #{roleName} '%'
         </if>
     </select>
-    <insert id="insert" parameterType="com.exposure.exposureservice.entity.SysRole">
+    <insert id="insert" parameterType="com.exposure.exposureservice.entity.SysRole" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into `sys_role` (
           id,
           role_name,
@@ -56,6 +83,20 @@
           #{createTime}
         )
     </insert>
+    <insert id="insertSysRolePermissions" parameterType="ArrayList">
+        insert into `sys_role_permission` (
+          role_id, permission_id
+        ) values 
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId}, #{item.permissionId})
+        </foreach>
+    </insert>
+    <delete id="delSysRolePermission" parameterType="java.lang.Integer">
+        delete from `sys_role_permission` where role_id = #{roleId}
+    </delete>
+    <select id="findPermissionByRoleId" parameterType="java.lang.Integer">
+        select * from `sys_role_permission` where role_id = #{roleId}
+    </select>
     <update id="update" parameterType="com.exposure.exposureservice.entity.SysRole">
         update `sys_role`
         <set>
@@ -69,5 +110,13 @@
     </update>
     <delete id="del" parameterType="java.lang.Integer">
         delete from `sys_role` where id = #{id}
+    </delete>
+    <select id="findRolesByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+        select sr.role_name from `sys_role` sr
+        inner join `sys_user_role` sur on sur.role_id = sr.id
+        where sur.user_id = #{userId}
+    </select>
+    <delete id="delSysRolePermissionByRoleId" parameterType="java.lang.Integer">
+        delete from `sys_role_permission` where role_id = #{roleId}
     </delete>
 </mapper>

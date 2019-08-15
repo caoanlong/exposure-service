@@ -1,6 +1,5 @@
 package com.exposure.exposureservice.shiro;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;

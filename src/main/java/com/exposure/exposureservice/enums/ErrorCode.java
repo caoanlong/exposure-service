@@ -85,6 +85,11 @@ public enum ErrorCode {
     EMAIL_NOT_EXIST(117, "邮箱不存在"),
 
     /**
+     * 未授权
+     */
+    NO_PERMISSION(120, "未授权"),
+
+    /**
      * 角色不能为空
      */
     ROLE_NOTNULL(1000, "角色不能为空"),
