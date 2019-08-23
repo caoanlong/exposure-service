@@ -1,11 +1,9 @@
 package com.exposure.exposureservice.shiro;
 
-import com.exposure.exposureservice.entity.SysRole;
 import com.exposure.exposureservice.entity.SysUser;
 import com.exposure.exposureservice.service.SysPermissionService;
 import com.exposure.exposureservice.service.SysRoleService;
 import com.exposure.exposureservice.service.SysUserService;
-import com.exposure.exposureservice.service.impl.SysUserServiceImpl;
 import com.exposure.exposureservice.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.apache.shiro.authc.*;

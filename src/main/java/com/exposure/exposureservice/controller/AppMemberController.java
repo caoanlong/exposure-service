@@ -1,4 +1,4 @@
-package com.exposure.exposureservice.controller.app;
+package com.exposure.exposureservice.controller;
 
 import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.entity.Member;

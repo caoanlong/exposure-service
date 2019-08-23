@@ -1,4 +1,4 @@
-package com.exposure.exposureservice.controller.admin;
+package com.exposure.exposureservice.controller;
 
 import com.exposure.exposureservice.entity.PageBean;
 import com.exposure.exposureservice.entity.ResultBean;
@@ -15,10 +15,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Api(value = "ThingController", description = "事物管理")
+@Api(value = "AppThingController", description = "事物管理")
 @RestController
-@RequestMapping("/admin/thing")
-public class ThingController {
+@RequestMapping("/app/thing")
+public class AppThingController {
     @Autowired
     private ThingService thingService;
 
@@ -51,7 +51,7 @@ public class ThingController {
     @PostMapping("/add")
     public ResultBean<Object> add(@RequestBody ThingDto thingDto, HttpServletRequest request) {
         Long sysUserId = Long.valueOf((String) request.getAttribute("sysUserId"));
-        thingDto.setCreateType(1);
+        thingDto.setCreateType(2);
         thingDto.setCreateUserId(sysUserId);
         thingService.insert(thingDto);
         return ResultUtils.success();
