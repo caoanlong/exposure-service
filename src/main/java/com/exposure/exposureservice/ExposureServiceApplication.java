@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableAutoConfiguration
 @EnableScheduling
 @MapperScan(basePackages = {"com.exposure.exposureservice.repository"})
 public class ExposureServiceApplication {
