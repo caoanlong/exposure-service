@@ -90,6 +90,11 @@ public enum ErrorCode {
     NO_PERMISSION(120, "未授权"),
 
     /**
+     * 退出成功
+     */
+    LOGOUT_SUCCESS(121, "退出成功"),
+
+    /**
      * 角色不能为空
      */
     ROLE_NOTNULL(1000, "角色不能为空"),
