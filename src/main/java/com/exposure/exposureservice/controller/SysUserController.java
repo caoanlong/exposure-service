@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,6 +114,10 @@ public class SysUserController {
             throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
         }
         return authReturn(response, user.getId().toString());
+    }
+
+    private Authentication authenticate(String userName, String password) {
+        return null;
     }
 
     private ResultBean<Object> authReturn(HttpServletResponse response, String sysUserId) {
