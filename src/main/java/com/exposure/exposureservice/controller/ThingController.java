@@ -8,6 +8,7 @@ import com.exposure.exposureservice.service.ThingService;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ public class ThingController {
         return ResultUtils.success(list);
     }
 
+    @Secured("thing:list")
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "title", required = false) String title,

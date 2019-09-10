@@ -6,7 +6,6 @@ import com.exposure.exposureservice.entity.exception.CommonException;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -44,9 +43,6 @@ public class ExceptionHandle {
         } else if (e instanceof MaxUploadSizeExceededException) {
             // 图片过大
             return ResultUtils.error(ErrorCode.IMG_TOO_LARGE);
-        } else if (e instanceof UnauthorizedException) {
-            // 未授权
-            return ResultUtils.error(ErrorCode.NO_PERMISSION);
         } else {
             // 未知错误
             return ResultUtils.error(ErrorCode.UNKONW_ERROR);
