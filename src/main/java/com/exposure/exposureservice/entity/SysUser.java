@@ -1,7 +1,5 @@
 package com.exposure.exposureservice.entity;
 
-import com.exposure.exposureservice.config.Constant;
-import com.exposure.exposureservice.utils.MD5Utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
@@ -42,8 +40,7 @@ public class SysUser extends Base {
     }
 
     public void setPassword(String password) {
-        String pwd = MD5Utils.md5(password, Constant.MD5_SALT_SYSUSER);
-        this.password = pwd;
+        this.password = password;
     }
 
     public String getSalt() {

@@ -1,13 +1,16 @@
 package com.exposure.exposureservice.security;
 
 import com.alibaba.fastjson.JSON;
+import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.enums.ErrorCode;
+import com.exposure.exposureservice.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,8 +18,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -28,14 +33,20 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private SysUserDetailsService sysUserDetailsService;
+
+    @Autowired
+    private JwtTokenFilter jwtTokenFilter;
+
     @Bean
-    public SysUserDetailService sysUserDetailService() {
-        return new SysUserDetailService();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println(http);
         http.csrf().disable()  // 禁用 Spring Security 自带的跨域处理
                 .authorizeRequests()
                 // 开启swagger-ui权限
@@ -51,7 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/sysUser/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated().and()  // 剩下所有的验证都需要验证
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()  // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
+                .sessionManagement()
+                    .disable()  // 让 Spring Security 不创建和使用 session
                 .formLogin()
                     .disable() //禁用security的表单登录，自定义实现
                 .logout()
@@ -59,11 +71,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                     .accessDeniedHandler(new BaseAuthHandler())
                     .authenticationEntryPoint(new BaseAuthHandler());
+        http.addFilterAfter(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sysUserDetailService());
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        // 校验用户
+        auth.userDetailsService(sysUserDetailsService).passwordEncoder(new PasswordEncoder() {
+            //对密码进行加密
+            @Override
+            public String encode(CharSequence charSequence) {
+                System.out.println("charSequence:" + charSequence.toString());
+                String pwd = MD5Utils.md5(charSequence.toString(), Constant.MD5_SALT_SYSUSER);
+                return pwd;
+            }
+
+            //对密码进行判断匹配
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                String pwd = MD5Utils.md5(charSequence.toString(), Constant.MD5_SALT_SYSUSER);
+                boolean equals = s.equals(pwd);
+                return equals;
+            }
+        });
     }
 
     private static class BaseAuthHandler implements AccessDeniedHandler, AuthenticationEntryPoint, LogoutSuccessHandler {
@@ -79,13 +109,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
+            System.out.println("1" + e);
             unAuth(response);
         }
 
         // 未登录时访问
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-            System.out.println(e);
+            System.out.println("2" + e);
             unAuth(response);
         }
 

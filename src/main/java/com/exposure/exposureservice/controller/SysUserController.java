@@ -8,13 +8,17 @@ import com.exposure.exposureservice.entity.exception.CommonException;
 import com.exposure.exposureservice.enums.ErrorCode;
 import com.exposure.exposureservice.service.SysUserService;
 import com.exposure.exposureservice.utils.JwtUtils;
+import com.exposure.exposureservice.utils.MD5Utils;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +30,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/sysUser")
 public class SysUserController {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -75,6 +82,9 @@ public class SysUserController {
     public ResultBean<Object> add(HttpServletRequest request, @RequestBody SysUser sysUser) {
         Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
         sysUser.setCreateUserId(id);
+        String password = sysUser.getPassword();
+        String pwd = MD5Utils.md5(password, Constant.MD5_SALT_SYSUSER);
+        sysUser.setPassword(pwd);
         sysUserService.insert(sysUser);
         return ResultUtils.success();
     }
@@ -108,16 +118,15 @@ public class SysUserController {
             throw new CommonException(ErrorCode.USERNAME_NOTNULL);
         if (StringUtils.isBlank(password))
             throw new CommonException(ErrorCode.PASSWORD_NOTNULL);
-
-        SysUser user = sysUserService.findByNameAndPassword(userName, password);
+        String pwd = MD5Utils.md5(password, Constant.MD5_SALT_SYSUSER);
+        SysUser user = sysUserService.findByNameAndPassword(userName, pwd);
         if (null == user) {
             throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
         }
+        UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(user.getId().toString(), pwd);
+        Authentication authentication = authenticationManager.authenticate(upToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return authReturn(response, user.getId().toString());
-    }
-
-    private Authentication authenticate(String userName, String password) {
-        return null;
     }
 
     private ResultBean<Object> authReturn(HttpServletResponse response, String sysUserId) {
