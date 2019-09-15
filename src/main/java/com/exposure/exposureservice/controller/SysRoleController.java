@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ public class SysRoleController {
     private SysRoleService sysRoleService;
 
     @ApiOperation(value = "findAll", notes = "查询所有系统角色", response = SysRole.class, responseContainer = "List")
+    @Secured({"sysRole", "sysRole:list"})
     @GetMapping("/findAll")
     public ResultBean<Object> findAll() {
         List<SysRole> list = sysRoleService.findAll();
@@ -30,6 +32,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "findList", notes = "根据分页查询系统角色列表", response = SysRole.class, responseContainer = "List")
+    @Secured({"sysRole", "sysRole:list"})
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "roleName", required = false) String roleName,
@@ -41,6 +44,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "findById", notes = "根据ID查询系统角色详情", response = SysRole.class)
+    @Secured({"sysRole", "sysRole:view"})
     @GetMapping("/findById")
     public ResultBean<Object> findById(@RequestParam("id") Integer id) {
         SysRole sysRole = sysRoleService.findById(id);
@@ -48,6 +52,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "add", notes = "添加系统角色")
+    @Secured({"sysRole", "sysRole:add"})
     @PostMapping("/add")
     public ResultBean<Object> add(HttpServletRequest request, @RequestBody SysRole sysRole) {
         Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -57,6 +62,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "update", notes = "修改系统角色")
+    @Secured({"sysRole", "sysRole:edit"})
     @PostMapping("/update")
     public ResultBean<Object> update(HttpServletRequest request, @RequestBody SysRole sysRole) {
         Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -66,6 +72,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "del", notes = "删除系统角色")
+    @Secured({"sysRole", "sysRole:del"})
     @PostMapping("/del")
     public ResultBean<Object> del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Integer> map) {
         Integer id = map.get("id");

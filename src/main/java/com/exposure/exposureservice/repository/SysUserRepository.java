@@ -22,6 +22,7 @@ public interface SysUserRepository {
     void del(Long id);
 
     SysUser findBaseInfoById(Long id);
+    SysUser findBaseInfoByName(String userName);
 
     SysUser findByNameAndPassword(
             @Param("userName") String userName,

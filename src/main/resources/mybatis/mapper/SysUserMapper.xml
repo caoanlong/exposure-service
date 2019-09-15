@@ -70,6 +70,9 @@
     <select id="findBaseInfoById" resultMap="BaseMap">
         select * from `sys_user` where id = #{id}
     </select>
+    <select id="findBaseInfoByName" resultMap="BaseMap">
+        select * from `sys_user` where user_name = #{userName}
+    </select>
     <select id="total" resultType="java.lang.Long">
         select count(1) from `sys_user`
         <if test="userName != null">

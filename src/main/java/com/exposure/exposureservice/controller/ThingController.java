@@ -23,13 +23,14 @@ public class ThingController {
     @Autowired
     private ThingService thingService;
 
+    @Secured({"thing", "thing:list"})
     @GetMapping("/findAll")
     public ResultBean<Object> findAll(@RequestParam(value = "title", required = false) String title) {
         List<Thing> list = thingService.findAll(title);
         return ResultUtils.success(list);
     }
 
-    @Secured("thing:list")
+    @Secured({"thing", "thing:list"})
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "title", required = false) String title,
@@ -44,12 +45,14 @@ public class ThingController {
         return ResultUtils.success(list);
     }
 
+    @Secured({"thing", "thing:view"})
     @GetMapping("/findById")
     public ResultBean<Object> findById(@RequestParam("id") Long id) {
         Thing thing = thingService.findById(id);
         return ResultUtils.success(thing);
     }
 
+    @Secured({"thing", "thing:add"})
     @PostMapping("/add")
     public ResultBean<Object> add(@RequestBody ThingDto thingDto, HttpServletRequest request) {
         Long sysUserId = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -59,6 +62,7 @@ public class ThingController {
         return ResultUtils.success();
     }
 
+    @Secured({"thing", "thing:edit"})
     @PostMapping("/update")
     public ResultBean<Object> update(@RequestBody ThingDto thingDto, HttpServletRequest request) {
         Long sysUserId = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -67,6 +71,7 @@ public class ThingController {
         return ResultUtils.success();
     }
 
+    @Secured({"thing", "thing:del"})
     @PostMapping("/del")
     public ResultBean<Object> del(@RequestBody Map<String, Long> map) {
         Long id = map.get("id");

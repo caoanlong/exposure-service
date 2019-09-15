@@ -14,6 +14,7 @@ public interface SysUserService {
     void del(Long id);
 
     SysUser findBaseInfoById(Long id);
+    SysUser findBaseInfoByName(String userName);
 
     SysUser findByNameAndPassword(String userName, String password);
 

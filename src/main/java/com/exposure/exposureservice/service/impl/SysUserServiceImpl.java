@@ -95,6 +95,11 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    public SysUser findBaseInfoByName(String userName) {
+        return sysUserRepository.findBaseInfoByName(userName);
+    }
+
+    @Override
     public SysUser findByNameAndPassword(String userName, String password) {
         return sysUserRepository.findByNameAndPassword(userName, password);
     }

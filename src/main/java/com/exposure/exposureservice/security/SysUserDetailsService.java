@@ -26,19 +26,17 @@ public class SysUserDetailsService implements UserDetailsService {
     private SysPermissionService sysPermissionService;
 
     @Override
-    public UserDetails loadUserByUsername(String sysUserId) throws UsernameNotFoundException {
-        System.out.println("sysUserId:" + sysUserId);
-        Long userId = Long.valueOf(sysUserId);
-        SysUser sysUser = sysUserService.findBaseInfoById(userId);
-        System.out.println(sysUser.getPassword());
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        SysUser sysUser = sysUserService.findBaseInfoByName(userName);
         if (sysUser == null) {
             throw new CommonException(ErrorCode.USERNAMEORPASSWORD_ERROR);
         }
-        List<String> permissions = sysPermissionService.findPermissionByUserId(userId);
+        List<String> permissions = sysPermissionService.findPermissionByUserId(sysUser.getId());
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (String permission: permissions) {
             authorities.add(new SimpleGrantedAuthority(permission));
         }
-        return new User(sysUserId, sysUser.getPassword(), authorities);
+        User user = new User(sysUser.getUserName(), sysUser.getPassword(), authorities);
+        return user;
     }
 }

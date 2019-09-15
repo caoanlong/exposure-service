@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -31,6 +32,7 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true) // 启用全局方法安全，采用@Secured方式
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -49,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()  // 禁用 Spring Security 自带的跨域处理
                 .authorizeRequests()
+                .antMatchers("/app/**").permitAll()
                 // 开启swagger-ui权限
                 .antMatchers(
                         "/configuration/ui",
@@ -56,14 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/configuration/security",
                         "/swagger-ui.html",
                         "/webjars/**",
-                        "/swagger-resources/configuration/ui",
-                        "/app/**"
+                        "/swagger-resources/configuration/ui"
                 ).permitAll()
                 .antMatchers("/admin/sysUser/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated().and()  // 剩下所有的验证都需要验证
                 .sessionManagement()
-                    .disable()  // 让 Spring Security 不创建和使用 session
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .formLogin()
                     .disable() //禁用security的表单登录，自定义实现
                 .logout()
@@ -81,16 +83,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //对密码进行加密
             @Override
             public String encode(CharSequence charSequence) {
-                System.out.println("charSequence:" + charSequence.toString());
-                String pwd = MD5Utils.md5(charSequence.toString(), Constant.MD5_SALT_SYSUSER);
-                return pwd;
+                return charSequence.toString();
             }
 
             //对密码进行判断匹配
             @Override
             public boolean matches(CharSequence charSequence, String s) {
-                String pwd = MD5Utils.md5(charSequence.toString(), Constant.MD5_SALT_SYSUSER);
-                boolean equals = s.equals(pwd);
+                boolean equals = s.equals(charSequence.toString());
                 return equals;
             }
         });

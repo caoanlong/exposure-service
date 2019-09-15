@@ -37,18 +37,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         //header没带token的，直接放过，因为部分url匿名用户也可以访问
         //如果需要不支持匿名用户的请求没带token，这里放过也没问题，因为SecurityContext中没有认证信息，后面会被权限控制模块拦截
-        if (!requiresAuthenticationRequestMatcher.matches(request)) {
+        if (!requiresAuthenticationRequestMatcher.matches(request) || request.getRequestURI().startsWith("/app/")) {
             chain.doFilter(request, response);
             return;
         }
         String token = request.getHeader("Authorization");
         if (null != token) {
             Claims claims = jwtUtils.parseJWT(token);
-            String sysUserId = claims.getSubject();
-            System.out.println("sysUserId-ggg:" + sysUserId);
-            System.out.println("getAuthentication:" + SecurityContextHolder.getContext().getAuthentication());
-            if (sysUserId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = sysUserDetailsService.loadUserByUsername(sysUserId);
+            String s = claims.getSubject();
+            if (s != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                String[] split = s.split(":");
+                request.setAttribute("sysUserId", split[0]);
+                String userName = split[1];
+                UserDetails userDetails = sysUserDetailsService.loadUserByUsername(userName);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

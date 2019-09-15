@@ -1,6 +1,5 @@
 package com.exposure.exposureservice.config;
 
-import com.exposure.exposureservice.controller.interceptors.AdminInterceptor;
 import com.exposure.exposureservice.controller.interceptors.AppInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
