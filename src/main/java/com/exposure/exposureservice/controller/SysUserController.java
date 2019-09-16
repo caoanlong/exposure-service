@@ -15,12 +15,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +42,7 @@ public class SysUserController {
     private SysUserService sysUserService;
 
     @ApiOperation(value = "findAll", notes = "查询所有系统用户", response = SysUser.class, responseContainer = "List")
-    @Secured({"sysUser", "sysUser:list"})
+    @PreAuthorize("hasAnyAuthority('sysUser', 'sysUser:list')")
     @GetMapping("/findAll")
     public ResultBean<Object> findAll() {
         List<SysUser> list = sysUserService.findAll();
@@ -51,7 +50,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "findList", notes = "根据分页查询系统用户列表", response = SysUser.class, responseContainer = "List")
-    @Secured({"sysUser", "sysUser:list"})
+    @PreAuthorize("hasAnyAuthority('sysUser', 'sysUser:list')")
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "userName", required = false) String userName,
@@ -63,7 +62,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "findById", notes = "根据ID查询系统用户详情", response = SysUser.class)
-    @Secured({"sysUser", "sysUser:view"})
+    @PreAuthorize("hasAnyAuthority('sysUser', 'sysUser:view')")
     @GetMapping("/findById")
     public ResultBean<Object> findById(@RequestParam("id") Long id) {
         SysUser sysUser = sysUserService.findById(id);
@@ -79,7 +78,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "add", notes = "添加系统用户")
-    @Secured({"sysUser", "sysUser:add"})
+    @PreAuthorize("hasAnyAuthority('sysUser', 'sysUser:add')")
     @PostMapping("/add")
     public ResultBean<Object> add(HttpServletRequest request, @RequestBody SysUser sysUser) {
         Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -92,7 +91,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "update", notes = "修改系统用户")
-    @Secured({"sysUser", "sysUser:edit"})
+    @PreAuthorize("hasAnyAuthority('sysUser', 'sysUser:edit')")
     @PostMapping("/update")
     public ResultBean<Object> update(HttpServletRequest request, @RequestBody SysUser sysUser) {
         Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -102,7 +101,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "del", notes = "删除系统用户")
-    @Secured({"sysUser", "sysUser:del"})
+    @PreAuthorize("hasAnyAuthority('sysUser', 'sysUser:del')")
     @PostMapping("/del")
     public ResultBean<Object> del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Long> map) {
         Long id = map.get("id");

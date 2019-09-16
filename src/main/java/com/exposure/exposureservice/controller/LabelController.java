@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class LabelController {
     private LabelService labelService;
 
     @ApiOperation(value = "findAll", notes = "查询所有标签", response = Label.class, responseContainer = "List")
-    @Secured({"label", "label:list"})
+    @PreAuthorize("hasAnyAuthority('label', 'label:list')")
     @GetMapping("/findAll")
     public ResultBean<Object> findAll() {
         List<Label> list = labelService.findAll();
@@ -33,7 +34,7 @@ public class LabelController {
     }
 
     @ApiOperation(value = "findList", notes = "根据分页查询标签列表", response = Label.class, responseContainer = "List")
-    @Secured({"label", "label:list"})
+    @PreAuthorize("hasAnyAuthority('label', 'label:list')")
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "name", required = false) String name,
@@ -45,7 +46,7 @@ public class LabelController {
     }
 
     @ApiOperation(value = "findById", notes = "根据ID查询标签详情", response = Label.class)
-    @Secured({"label", "label:view"})
+    @PreAuthorize("hasAnyAuthority('label', 'label:view')")
     @GetMapping("/findById")
     public ResultBean<Object> findById(@RequestParam("id") Long id) {
         Label label = labelService.findById(id);
@@ -53,7 +54,7 @@ public class LabelController {
     }
 
     @ApiOperation(value = "add", notes = "添加标签")
-    @Secured({"label", "label:add"})
+    @PreAuthorize("hasAnyAuthority('label', 'label:add')")
     @PostMapping("/add")
     public ResultBean<Object> add(@RequestBody Label label, HttpServletRequest request) {
         Long sysUserId = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -63,7 +64,7 @@ public class LabelController {
     }
 
     @ApiOperation(value = "update", notes = "修改系统用户")
-    @Secured({"label", "label:edit"})
+    @PreAuthorize("hasAnyAuthority('label', 'label:edit')")
     @PostMapping("/update")
     public ResultBean<Object> update(@RequestBody Label label, HttpServletRequest request) {
         Long sysUserId = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -73,7 +74,7 @@ public class LabelController {
     }
 
     @ApiOperation(value = "del", notes = "删除系统用户")
-    @Secured({"label", "label:del"})
+    @PreAuthorize("hasAnyAuthority('label', 'label:del')")
     @PostMapping("/del")
     public ResultBean<Object> del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Long> map) {
         Long id = map.get("id");

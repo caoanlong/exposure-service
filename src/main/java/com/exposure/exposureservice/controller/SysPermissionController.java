@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class SysPermissionController {
     private SysPermissionService sysPermissionService;
 
     @ApiOperation(value = "findAll", notes = "查询所有系统权限", response = SysPermission.class, responseContainer = "List")
-    @Secured({"sysPermission", "sysPermission:list"})
+    @PreAuthorize("hasAnyAuthority('sysPermission', 'sysPermission:list')")
     @GetMapping("/findAll")
     public ResultBean<Object> findAll() {
         List<SysPermission> list = sysPermissionService.findAll();
@@ -34,7 +35,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "findList", notes = "根据分页查询系统权限列表", response = SysPermission.class, responseContainer = "List")
-    @Secured({"sysPermission", "sysPermission:list"})
+    @PreAuthorize("hasAnyAuthority('sysPermission', 'sysPermission:list')")
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "perName", required = false) String perName,
@@ -47,7 +48,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "findById", notes = "根据ID查询系统权限详情", response = SysPermission.class)
-    @Secured({"sysPermission", "sysPermission:view"})
+    @PreAuthorize("hasAnyAuthority('sysPermission', 'sysPermission:view')")
     @GetMapping("/findById")
     public ResultBean<Object> findById(@RequestParam("id") Integer id) {
         SysPermission sysPermission = sysPermissionService.findById(id);
@@ -55,7 +56,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "add", notes = "添加系统权限")
-    @Secured({"sysPermission", "sysPermission:add"})
+    @PreAuthorize("hasAnyAuthority('sysPermission', 'sysPermission:add')")
     @PostMapping("/add")
     public ResultBean<Object> add(HttpServletRequest request, @RequestBody SysPermission sysPermission) {
         Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -65,7 +66,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "update", notes = "修改系统权限")
-    @Secured({"sysPermission", "sysPermission:edit"})
+    @PreAuthorize("hasAnyAuthority('sysPermission', 'sysPermission:edit')")
     @PostMapping("/update")
     public ResultBean<Object> update(HttpServletRequest request, @RequestBody SysPermission sysPermission) {
         Long id = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -75,7 +76,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "del", notes = "删除系统权限")
-    @Secured({"sysPermission", "sysPermission:del"})
+    @PreAuthorize("hasAnyAuthority('sysPermission', 'sysPermission:del')")
     @PostMapping("/del")
     public ResultBean<Object> del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Integer> map) {
         Integer id = map.get("id");
@@ -84,7 +85,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "findByPid", notes = "根据ID查询系统权限列表", response = SysPermission.class)
-    @Secured({"sysPermission", "sysPermission:list"})
+    @PreAuthorize("hasAnyAuthority('sysPermission', 'sysPermission:list')")
     @GetMapping("/findByPid")
     public ResultBean<Object> findByPid(@RequestParam(value = "pid", required = false) Integer pid) {
         if (null == pid) pid = -1;

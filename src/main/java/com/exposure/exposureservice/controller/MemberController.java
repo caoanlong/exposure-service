@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class MemberController {
     private StringRedisTemplate stringRedisTemplate;
 
     @ApiOperation(value = "findAll", notes = "查询所有会员", response = Member.class, responseContainer = "List")
-    @Secured({"member", "member:list"})
+    @PreAuthorize("hasAnyAuthority('member', 'member:list')")
     @GetMapping("/findAll")
     public ResultBean<Object> findAll() {
         List<Member> list = memberService.findAll();
@@ -35,7 +36,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "findList", notes = "根据分页查询会员列表", response = Member.class, responseContainer = "List")
-    @Secured({"member", "member:list"})
+    @PreAuthorize("hasAnyAuthority('member', 'member:list')")
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "userName", required = false) String userName,
@@ -58,7 +59,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "findById", notes = "根据ID查询会员详情", response = Member.class)
-    @Secured({"member", "member:view"})
+    @PreAuthorize("hasAnyAuthority('member', 'member:view')")
     @GetMapping("/findById")
     public ResultBean<Object> findById(@RequestParam("id") Long id) {
         Member member = memberService.findById(id);
@@ -66,7 +67,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "add", notes = "添加会员")
-    @Secured({"member", "member:add"})
+    @PreAuthorize("hasAnyAuthority('member', 'member:add')")
     @PostMapping("/add")
     public ResultBean<Object> add(@RequestBody Member member) {
         memberService.insert(member);
@@ -74,7 +75,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "update", notes = "修改会员")
-    @Secured({"member", "member:edit"})
+    @PreAuthorize("hasAnyAuthority('member', 'member:edit')")
     @PostMapping("/update")
     public ResultBean<Object> update(@RequestBody Member member) {
         memberService.update(member);
@@ -82,7 +83,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "del", notes = "删除会员")
-    @Secured({"member", "member:del"})
+    @PreAuthorize("hasAnyAuthority('member', 'member:del')")
     @PostMapping("/del")
     public ResultBean<Object> del(@RequestBody @ApiParam(name = "id", value = "id", required = true) Map<String, Long> map) {
         Long id = map.get("id");

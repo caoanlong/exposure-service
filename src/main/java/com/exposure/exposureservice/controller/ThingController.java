@@ -8,7 +8,7 @@ import com.exposure.exposureservice.service.ThingService;
 import com.exposure.exposureservice.utils.ResultUtils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +23,14 @@ public class ThingController {
     @Autowired
     private ThingService thingService;
 
-    @Secured({"thing", "thing:list"})
+    @PreAuthorize("hasAnyAuthority('thing', 'thing:list')")
     @GetMapping("/findAll")
     public ResultBean<Object> findAll(@RequestParam(value = "title", required = false) String title) {
         List<Thing> list = thingService.findAll(title);
         return ResultUtils.success(list);
     }
 
-    @Secured({"thing", "thing:list"})
+    @PreAuthorize("hasAnyAuthority('thing', 'thing:list')")
     @GetMapping("/findList")
     public ResultBean<Object> findList(
             @RequestParam(value = "title", required = false) String title,
@@ -45,14 +45,14 @@ public class ThingController {
         return ResultUtils.success(list);
     }
 
-    @Secured({"thing", "thing:view"})
+    @PreAuthorize("hasAnyAuthority('thing', 'thing:view')")
     @GetMapping("/findById")
     public ResultBean<Object> findById(@RequestParam("id") Long id) {
         Thing thing = thingService.findById(id);
         return ResultUtils.success(thing);
     }
 
-    @Secured({"thing", "thing:add"})
+    @PreAuthorize("hasAnyAuthority('thing', 'thing:add')")
     @PostMapping("/add")
     public ResultBean<Object> add(@RequestBody ThingDto thingDto, HttpServletRequest request) {
         Long sysUserId = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -62,7 +62,7 @@ public class ThingController {
         return ResultUtils.success();
     }
 
-    @Secured({"thing", "thing:edit"})
+    @PreAuthorize("hasAnyAuthority('thing', 'thing:edit')")
     @PostMapping("/update")
     public ResultBean<Object> update(@RequestBody ThingDto thingDto, HttpServletRequest request) {
         Long sysUserId = Long.valueOf((String) request.getAttribute("sysUserId"));
@@ -71,7 +71,7 @@ public class ThingController {
         return ResultUtils.success();
     }
 
-    @Secured({"thing", "thing:del"})
+    @PreAuthorize("hasAnyAuthority('thing', 'thing:del')")
     @PostMapping("/del")
     public ResultBean<Object> del(@RequestBody Map<String, Long> map) {
         Long id = map.get("id");

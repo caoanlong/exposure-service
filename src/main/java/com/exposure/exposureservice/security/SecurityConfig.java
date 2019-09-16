@@ -1,10 +1,8 @@
 package com.exposure.exposureservice.security;
 
 import com.alibaba.fastjson.JSON;
-import com.exposure.exposureservice.config.Constant;
 import com.exposure.exposureservice.entity.ResultBean;
 import com.exposure.exposureservice.enums.ErrorCode;
-import com.exposure.exposureservice.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +30,7 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true) // 启用全局方法安全，采用@Secured方式
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 启用全局方法安全，采用@Secured方式
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -54,12 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/app/**").permitAll()
                 // 开启swagger-ui权限
                 .antMatchers(
-                        "/configuration/ui",
-                        "/swagger-resources",
-                        "/configuration/security",
+                        "/swagger-resources/**",
                         "/swagger-ui.html",
                         "/webjars/**",
-                        "/swagger-resources/configuration/ui"
+                        "/v2/**"
                 ).permitAll()
                 .antMatchers("/admin/sysUser/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
